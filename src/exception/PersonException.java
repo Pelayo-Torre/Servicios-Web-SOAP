@@ -1,26 +1,16 @@
 package exception;
 
-public class PersonException extends Exception{
+public class PersonException extends GenericException{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String faultCode;
-	private String faultString;
-		
+	/**
+	 * Constructor
+	 * @param message
+	 * @param faultCode
+	 */
 	public PersonException(String message, String faultCode) {
-		super(message);
-		this.faultString = getMessage();
-		this.faultCode = faultCode;
+		super(message, faultCode);
 	}
-
-	public String getFaultCode() {
-		return faultCode;
-	}
-
-	public String getFaultString() {
-		return faultString;
-	}
-	
-	
 
 }

@@ -1,11 +1,13 @@
 package web.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.jws.WebService;
 
 import exception.PersonException;
-import modelo.Person;
+import model.Client;
+import persistence.ClientDAO;
 import utils.Constantes;
 import validators.PersonValidator;
 
@@ -13,11 +15,11 @@ import validators.PersonValidator;
 @WebService(endpointInterface = "web.services.IPersonWS")
 public class PersonWS implements IPersonWS{
 	
-	private ArrayList<Person> personas = new ArrayList<Person>();
+	private ArrayList<Client> personas = new ArrayList<Client>();
 	private PersonValidator personValidator = new PersonValidator();
 
 	@Override
-	public String add(Person person) throws PersonException {
+	public String add(Client person) throws PersonException {
 		personValidator.validate(person);
 		personas.add(person);
 		return Constantes.RESPONSE_OK;
@@ -30,22 +32,31 @@ public class PersonWS implements IPersonWS{
 	}
 
 	@Override
-	public String update(Person person) throws PersonException {
+	public String update(Client person) throws PersonException {
 		personValidator.validate(person);
 		personas.add(person);
 		return Constantes.RESPONSE_OK;
 	}
 
 	@Override
-	public Person getPerson(Long id) {
+	public Client getPerson(Long id) {
 		return null;
 	}
 
 	@Override
-	public Person[] getList() {
-		Person [] array = new Person [personas.size()];
-		personas.toArray(array);
-		return array;
+	public List<Client> getList() {
+		/*
+		 * Client [] array = new Client [personas.size()];
+		 * personas.toArray(array); return array;
+		 */
+		try {
+			ClientDAO c = new ClientDAO();
+			return c.getClients();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ArrayList<Client>();
 	}
 
 }

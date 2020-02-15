@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import model.Client;
+
 public class Reservation {
 	
 	private Long id;
@@ -14,7 +16,7 @@ public class Reservation {
 	private Date finalDate;
 	private double price;
 	
-	private Person person;
+	private Client person;
 	
 	private Set<Room> rooms = new HashSet<Room>();
 	
@@ -53,11 +55,11 @@ public class Reservation {
 	}
 
 	@XmlTransient
-	public Person getPerson() {
+	public Client getPerson() {
 		return person;
 	}
 
-	public void setPerson(Person person) {
+	public void setPerson(Client person) {
 		this.person = person;
 	}
 

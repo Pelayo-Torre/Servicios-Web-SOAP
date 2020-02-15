@@ -3,6 +3,9 @@ package modelo;
 import java.util.HashSet;
 import java.util.Set;
 
+import model.Client;
+
+
 
 public class Hotel {
 	
@@ -17,7 +20,7 @@ public class Hotel {
 	private Address address;
 	private Location location;
 	
-	private Set<Person> persons = new HashSet<Person>();
+	private Set<Client> clients = new HashSet<Client>();
 	
 	private Set<Service> services = new HashSet<Service>();
 	
@@ -69,12 +72,12 @@ public class Hotel {
 		return id;
 	}
 
-	public Set<Person> getPersons() {
-		return persons;
+	public Set<Client> getClients() {
+		return clients;
 	}
 
-	public void setPersons(Set<Person> persons) {
-		this.persons = persons;
+	public void setClients(Set<Client> clients) {
+		this.clients = clients;
 	}
 
 	public Set<Service> getServices() {

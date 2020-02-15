@@ -1,8 +1,10 @@
-package modelo;
+package model;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-public class Person{
+import modelo.Hotel;
+
+public class Client {
 
 	private String name;
 	private String mail;
@@ -13,7 +15,7 @@ public class Person{
 	
 	private Hotel hotel;
 	
-	public Person() {}
+	public Client() {}
 		
 	@XmlTransient
 	public Long getId() {
