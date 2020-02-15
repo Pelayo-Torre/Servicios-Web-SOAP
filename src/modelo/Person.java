@@ -1,11 +1,9 @@
 package modelo;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlTransient;
 
-public class Person implements Serializable{
+public class Person{
 
-	private static final long serialVersionUID = 1L;
-	
 	private String name;
 	private String mail;
 	private String phone;
@@ -13,8 +11,11 @@ public class Person implements Serializable{
 	private String dni;
 	private Long id;
 	
+	private Hotel hotel;
+	
 	public Person() {}
 		
+	@XmlTransient
 	public Long getId() {
 		return id;
 	}
@@ -58,14 +59,19 @@ public class Person implements Serializable{
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
+	
+	@XmlTransient
+	public Hotel getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
+	}
 
 	@Override
 	public String toString() {
 		return "Person [name=" + name + ", mail=" + mail + ", phone=" + phone + ", age=" + age + ", dni=" + dni + "]";
 	}
 
-	
-	
-	
-	
 }

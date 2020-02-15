@@ -22,7 +22,7 @@ public interface IPersonWS {
 	public String update(Person person) throws PersonException;
 	
 	@WebMethod
-	public void getPerson(Long id);
+	public Person getPerson(Long id);
 	
 	@WebMethod
 	public Person [] getList();

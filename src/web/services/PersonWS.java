@@ -37,15 +37,14 @@ public class PersonWS implements IPersonWS{
 	}
 
 	@Override
-	public void getPerson(Long id) {
-		// TODO Auto-generated method stub
-		
+	public Person getPerson(Long id) {
+		return null;
 	}
 
 	@Override
 	public Person[] getList() {
 		Person [] array = new Person [personas.size()];
-		array = (Person[]) personas.toArray();
+		personas.toArray(array);
 		return array;
 	}
 
