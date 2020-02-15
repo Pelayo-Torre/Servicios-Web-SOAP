@@ -1,8 +1,8 @@
-package modelo;
+package model;
 
 import java.io.Serializable;
 
-public class Person implements Serializable{
+public class Client implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -13,7 +13,7 @@ public class Person implements Serializable{
 	private String dni;
 	private Long id;
 	
-	public Person() {}
+	public Client() {}
 		
 	public Long getId() {
 		return id;

@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import exception.PersonException;
-import modelo.Person;
+import model.Client;
 
 public class PersonValidator {
 	
@@ -19,7 +19,7 @@ public class PersonValidator {
 	 * @param person, la persona que se va a validar
 	 * @throws PersonException, excepción lanzada en caso de erroes en sus datos
 	 */
-	public void validate(Person person) throws PersonException {
+	public void validate(Client person) throws PersonException {
 		if(person.getName() == null || person.getName().equals(""))
 			throw new PersonException("El nombre es obligatorio", "415");
 		
