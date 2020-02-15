@@ -4,26 +4,23 @@ import java.util.ArrayList;
 
 import javax.jws.WebService;
 
+import exception.PersonException;
 import modelo.Person;
+import utils.Constantes;
+import validators.PersonValidator;
+
 
 @WebService(endpointInterface = "web.services.IPersonWS")
 public class PersonWS implements IPersonWS{
 	
 	private ArrayList<Person> personas = new ArrayList<Person>();
+	private PersonValidator personValidator = new PersonValidator();
 
 	@Override
-	public String add(String name, String surname, String mail, String phone, int age) {
-		Person p = new Person();
-		
-		p.setAge(age);
-		p.setMail(mail);
-		p.setName(name);
-		p.setPhone(phone);
-		p.setSurname(surname);
-		
-		personas.add(p);
-		
-		return p.toString();
+	public String add(Person person) throws PersonException {
+		personValidator.validate(person);
+		personas.add(person);
+		return Constantes.RESPONSE_OK;
 	}
 
 	@Override
@@ -33,14 +30,10 @@ public class PersonWS implements IPersonWS{
 	}
 
 	@Override
-	public String update(Person p) {
-		
-		////////////////////////
-		
-		//Funciona, se puede pasar el objeto Person pero debe implementar de Serializable
-		
-		/////////////////////////
-		return p.toString();
+	public String update(Person person) throws PersonException {
+		personValidator.validate(person);
+		personas.add(person);
+		return Constantes.RESPONSE_OK;
 	}
 
 	@Override
@@ -52,9 +45,7 @@ public class PersonWS implements IPersonWS{
 	@Override
 	public Person[] getList() {
 		Person [] array = new Person [personas.size()];
-		
 		array = (Person[]) personas.toArray();
-		
 		return array;
 	}
 

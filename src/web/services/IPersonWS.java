@@ -5,6 +5,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import exception.PersonException;
 import modelo.Person;
 
 @WebService
@@ -12,14 +13,13 @@ import modelo.Person;
 public interface IPersonWS {
 	
 	@WebMethod
-	public String add(String name, String surname, String mail, 
-			String phone, int age);
+	public String add(Person person) throws PersonException;
 	
 	@WebMethod
 	public void delete(Long id);
 	
 	@WebMethod
-	public String update(Person p);
+	public String update(Person person) throws PersonException;
 	
 	@WebMethod
 	public void getPerson(Long id);

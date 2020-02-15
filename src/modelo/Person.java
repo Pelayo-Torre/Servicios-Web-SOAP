@@ -7,10 +7,10 @@ public class Person implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
-	private String surname;
 	private String mail;
 	private String phone;
-	private int age;
+	private Integer age;
+	private String dni;
 	private Long id;
 	
 	public Person() {}
@@ -25,14 +25,6 @@ public class Person implements Serializable{
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public String getSurname() {
-		return surname;
-	}
-	
-	public void setSurname(String surname) {
-		this.surname = surname;
 	}
 	
 	public String getMail() {
@@ -50,19 +42,30 @@ public class Person implements Serializable{
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	public int getAge() {
+
+	public Integer getAge() {
 		return age;
 	}
-	
-	public void setAge(int age) {
+
+	public void setAge(Integer age) {
 		this.age = age;
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 
 	@Override
 	public String toString() {
-		return "Persona [name=" + name + ", surname=" + surname + ", mail=" + mail + ", phone=" + phone + ", age=" + age
-				+ "]";
+		return "Person [name=" + name + ", mail=" + mail + ", phone=" + phone + ", age=" + age + ", dni=" + dni + "]";
 	}
+
+	
+	
+	
 	
 }
