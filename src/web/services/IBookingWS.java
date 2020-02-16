@@ -1,5 +1,7 @@
 package web.services;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -21,9 +23,9 @@ public interface IBookingWS {
 	public String delete(Long id);
 	
 	@WebMethod
-	public Booking getReservation(Long id);
+	public Booking getBooking(Long id);
 	
 	@WebMethod
-	public Booking [] getReservations();
+	public List<Booking> getBookings(Long idClient);
 
 }

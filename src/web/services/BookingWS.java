@@ -1,44 +1,44 @@
 package web.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebService;
 
 import model.Booking;
+import services.BookingService;
 import utils.Constants;
 
-@WebService(endpointInterface = "web.services.IReservationWS")
+@WebService(endpointInterface = "web.services.IBookingWS")
 public class BookingWS implements IBookingWS{
 
-	List<Booking> reservations = new ArrayList<Booking>();
- 	
+	private BookingService bookingService = new BookingService();
+	
 	@Override
-	public String add(Booking reservation) {
-		reservations.add(reservation);
+	public String add(Booking booking) {
+		bookingService.add(booking);
 		return Constants.RESPONSE_OK;
 	}
 
 	@Override
-	public String update(Booking reservation) {
+	public String update(Booking booking) {
+		bookingService.update(booking);
 		return null;
 	}
 
 	@Override
 	public String delete(Long id) {
-		return null;
+		bookingService.delete(id);
+		return Constants.RESPONSE_OK;
 	}
 
 	@Override
-	public Booking getReservation(Long id) {
-		return null;
+	public Booking getBooking(Long id) {
+		return bookingService.getBooking(id);
 	}
 
 	@Override
-	public Booking[] getReservations() {
-		Booking [] array = new Booking [reservations.size()];
-		reservations.toArray(array);
-		return array;
+	public List<Booking> getBookings(Long idClient) {
+		return bookingService.getBookings(idClient);
 	}
 
 }

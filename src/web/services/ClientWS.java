@@ -10,7 +10,7 @@ import model.Client;
 import services.ClientService;
 import utils.Constants;
 
-@WebService(endpointInterface = "web.services.IPersonWS")
+@WebService(endpointInterface = "web.services.IClientWS")
 public class ClientWS implements IClientWS {
 
 	private ClientService clientService = new ClientService();
