@@ -14,7 +14,7 @@ public class Booking {
 	private String code;
 	private Date startDate;
 	private Date endDate;
-	private double price;
+	private Double price;
 
 	private Client client;
 	private Set<Service> services = new HashSet<Service>();
@@ -53,11 +53,11 @@ public class Booking {
 		this.endDate = endDate;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

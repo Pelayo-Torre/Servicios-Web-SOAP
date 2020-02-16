@@ -10,7 +10,7 @@ public class Service {
 	private Long id;
 	private String name;
 	private String code;
-	private double price;
+	private Double price;
 
 	private Hotel hotel;
 	private Set<Booking> bookings = new HashSet<Booking>();
@@ -40,11 +40,11 @@ public class Service {
 		this.code = code;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

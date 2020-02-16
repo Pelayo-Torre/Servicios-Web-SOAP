@@ -9,7 +9,7 @@ public class Room {
 
 	private Long id;
 	private String code;
-	private double price;
+	private Double price;
 	private RoomType roomType;
 
 	private Hotel hotel;
@@ -32,11 +32,11 @@ public class Room {
 		this.code = code;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
