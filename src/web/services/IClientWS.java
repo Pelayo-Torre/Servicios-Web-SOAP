@@ -24,7 +24,7 @@ public interface IClientWS {
 	public String updateClient(Long id, Client client) throws ClientException, Exception;
 
 	@WebMethod
-	public Client getClient(Long id) throws Exception;
+	public Client listClient(Long id) throws Exception;
 
 	@WebMethod
 	public List<Client> listClients() throws Exception;

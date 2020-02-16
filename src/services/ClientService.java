@@ -40,7 +40,7 @@ public class ClientService {
 	public String delete(Long id) throws SQLException, ClientException {
 		dao = ManagerDAO.getInstance().getClientDAO();
 
-		Client c = dao.getClient(id);
+		Client c = dao.listClient(id);
 		if (c == null)
 			throw new ClientException("El cliente que se desea eliminar no existe", "404");
 
@@ -58,7 +58,7 @@ public class ClientService {
 	public String update(Long id, Client client) throws SQLException, ClientException {
 		clientValidator.validate(client);
 		dao = ManagerDAO.getInstance().getClientDAO();
-		Client c = dao.getClient(id);
+		Client c = dao.listClient(id);
 		if (c == null)
 			throw new ClientException("El cliente que se desea eliminar no existe", "404");
 		client.setId(id);
@@ -74,7 +74,7 @@ public class ClientService {
 	 */
 	public Client listClient(Long id) throws SQLException {
 		dao = ManagerDAO.getInstance().getClientDAO();
-		return dao.getClient(id);
+		return dao.listClient(id);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class ClientService {
 	 */
 	public List<Client> listClients() throws SQLException {
 		dao = ManagerDAO.getInstance().getClientDAO();
-		return dao.getClients();
+		return dao.listClients();
 	}
 
 }

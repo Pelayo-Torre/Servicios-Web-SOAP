@@ -122,19 +122,21 @@ public class ClientDAO {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public Client getClient(Long id) throws SQLException {
+	public Client listClient(Long id) throws SQLException {
 
 		try {
-			pst = con.prepareStatement("select * from client where id=?");
+			pst = con.prepareStatement("select name, dni, telephone, email from client where id=?");
 			pst.setLong(1, id);
 			rs = pst.executeQuery();
-			rs.next();
-			Client c = new Client();
-			c.setName(rs.getString(1));
-			c.setDni(rs.getString(2));
-			c.setTelephone(rs.getString(3));
-			c.setEmail(rs.getString(4));
-			return c;
+			if (rs.next()) {
+				Client c = new Client();
+				c.setName(rs.getString(1));
+				c.setDni(rs.getString(2));
+				c.setTelephone(rs.getString(3));
+				c.setEmail(rs.getString(4));
+				return c;
+			}
+			return null;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -150,12 +152,12 @@ public class ClientDAO {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public List<Client> getClients() throws SQLException {
+	public List<Client> listClients() throws SQLException {
 
 		List<Client> clients = new ArrayList<Client>();
 
 		try {
-			pst = con.prepareStatement("select * from client");
+			pst = con.prepareStatement("select name, dni, telephone, email from client");
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				Client c = new Client();
