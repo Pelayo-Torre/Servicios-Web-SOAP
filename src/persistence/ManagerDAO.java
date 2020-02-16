@@ -23,10 +23,10 @@ public class ManagerDAO {
 	}
 
 	public ClientDAO getClientDAO() {
-		if (this.clientDAO == null) {
-			this.clientDAO = new ClientDAO(this.connection);
+		if (managerDAO.clientDAO == null) {
+			managerDAO.clientDAO = new ClientDAO(managerDAO.connection);
 		}
-		return this.clientDAO;
+		return managerDAO.clientDAO;
 	}
 
 }

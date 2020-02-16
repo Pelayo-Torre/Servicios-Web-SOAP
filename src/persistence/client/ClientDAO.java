@@ -32,11 +32,12 @@ public class ClientDAO {
 	 */
 	public void addClient(Client client) throws SQLException {
 		try {
-			pst = con.prepareStatement("insert into client values(?,?,?,?)");
+			pst = con.prepareStatement("insert into client values(?,?,?,?,?)");
 			pst.setString(1, client.getName());
 			pst.setString(2, client.getDni());
 			pst.setString(3, client.getTelephone());
 			pst.setString(4, client.getEmail());
+			pst.setBoolean(5, client.isActive());
 			pst.execute();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

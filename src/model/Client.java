@@ -14,6 +14,7 @@ public class Client {
 	private String dni;
 	private String telephone;
 	private String email;
+	private boolean active;
 
 	private Set<Booking> bookings = new HashSet<Booking>();
 	private Hotel hotel;
@@ -77,6 +78,15 @@ public class Client {
 		this.hotel = hotel;
 	}
 
+	@XmlTransient
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	/**
 	 * Constructor
 	 */
@@ -90,15 +100,18 @@ public class Client {
 	 * @param dni
 	 * @param telephone
 	 * @param email
+	 * @param active
 	 * @param bookings
 	 * @param hotel
 	 */
-	public Client(String name, String dni, String telephone, String email, Set<Booking> bookings, Hotel hotel) {
+	public Client(String name, String dni, String telephone, String email, boolean active, Set<Booking> bookings,
+			Hotel hotel) {
 		super();
 		this.name = name;
 		this.dni = dni;
 		this.telephone = telephone;
 		this.email = email;
+		this.active = active;
 		this.bookings = bookings;
 		this.hotel = hotel;
 	}
