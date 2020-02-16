@@ -18,10 +18,10 @@ public interface IClientWS {
 	public String addClient(Client client) throws ClientException, Exception;
 
 	@WebMethod
-	public void deleteClient(Long id) throws Exception;
+	public String deleteClient(Long id) throws Exception;
 
 	@WebMethod
-	public String updateClient(Client client) throws ClientException, Exception;
+	public String updateClient(Long id, Client client) throws ClientException, Exception;
 
 	@WebMethod
 	public Client listClient(Long id) throws Exception;

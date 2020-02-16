@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Client;
+import utils.Constants;
 
 public class ClientDAO {
 
@@ -30,22 +31,45 @@ public class ClientDAO {
 	 * @param client
 	 * @throws SQLException
 	 */
-	public void addClient(Client client) throws SQLException {
+	public String addClient(Client client) throws SQLException {
 		try {
-			pst = con.prepareStatement("insert into client values(?,?,?,?,?)");
-			pst.setString(1, client.getName());
-			pst.setString(2, client.getDni());
-			pst.setString(3, client.getTelephone());
-			pst.setString(4, client.getEmail());
-			pst.setBoolean(5, client.isActive());
-			pst.execute();
+			int id = getMaxId() + 1;
+			pst = con.prepareStatement("insert into client values(?,?,?,?,?,?)");
+			pst.setInt(1, id);
+			pst.setString(2, client.getName());
+			pst.setString(3, client.getDni());
+			pst.setString(4, client.getTelephone());
+			pst.setString(5, client.getEmail());
+			pst.setBoolean(6, client.isActive());
+			int row = pst.executeUpdate();
+			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			pst.close();
 		}
 	}
-	
+
+	/**
+	 * Método para obtener el maximo id
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	private int getMaxId() throws SQLException {
+		try {
+			pst = con.prepareStatement("select max(id) from client");
+			rs = pst.executeQuery();
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			rs.close();
+			pst.close();
+		}
+	}
+
 	/**
 	 * Método para borrar el cliente cuyo id se pasa por parametro
 	 * 
@@ -53,12 +77,14 @@ public class ClientDAO {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public void deleteClient(Long id) throws SQLException {
+	public String deleteClient(Long id) throws SQLException {
 
 		try {
-			pst = con.prepareStatement("delete from client where id=?");
-			pst.setLong(1, id);
-			pst.executeUpdate();
+			pst = con.prepareStatement("update client set active=? where id=?");
+			pst.setBoolean(1, false);
+			pst.setLong(2, id);
+			int row = pst.executeUpdate();
+			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -72,7 +98,7 @@ public class ClientDAO {
 	 * @param client
 	 * @throws SQLException
 	 */
-	public void updateClient(Client client) throws SQLException {
+	public String updateClient(Client client) throws SQLException {
 		try {
 			pst = con.prepareStatement("update client set name=?, dni=?, telephone=?, email=? where id=?");
 			pst.setString(1, client.getName());
@@ -80,7 +106,8 @@ public class ClientDAO {
 			pst.setString(3, client.getTelephone());
 			pst.setString(4, client.getEmail());
 			pst.setInt(5, client.getId().intValue());
-			pst.executeUpdate();
+			int row = pst.executeUpdate();
+			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
