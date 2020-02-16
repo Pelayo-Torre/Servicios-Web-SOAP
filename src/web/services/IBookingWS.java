@@ -5,25 +5,25 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
-import modelo.Reservation;
+import model.Booking;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
-public interface IReservationWS {
+public interface IBookingWS {
 	
 	@WebMethod
-	public String add(Reservation reservation);
+	public String add(Booking reservation);
 	
 	@WebMethod
-	public String update(Reservation reservation);
+	public String update(Booking reservation);
 	
 	@WebMethod
 	public String delete(Long id);
 	
 	@WebMethod
-	public Reservation getReservation(Long id);
+	public Booking getReservation(Long id);
 	
 	@WebMethod
-	public Reservation [] getReservations();
+	public Booking [] getReservations();
 
 }

@@ -5,11 +5,11 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
-import modelo.Service;
+import model.Service;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
-public interface IServicesWS {
+public interface IServiceWS {
 	
 	@WebMethod
 	public String add(Service service);

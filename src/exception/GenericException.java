@@ -1,12 +1,12 @@
 package exception;
 
-public class GenericException extends Exception{
+public class GenericException extends Exception {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String faultCode;
 	private String faultString;
-	
+
 	public String getFaultCode() {
 		return faultCode;
 	}
@@ -14,9 +14,10 @@ public class GenericException extends Exception{
 	public String getFaultString() {
 		return faultString;
 	}
-	
+
 	/**
 	 * Constructor
+	 * 
 	 * @param message
 	 * @param faultCode
 	 */

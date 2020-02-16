@@ -10,6 +10,10 @@ public class Database {
 	private static String CONNECTION_USER = "SA";
 	private static Connection con;
      
+	/**
+	 * Método para obtener la conexión a la base de datos
+	 * @return
+	 */
 	public static Connection getConnection()
 	{
 		try {
@@ -25,6 +29,9 @@ public class Database {
 		}
 	}
 	
+	/**
+	 * Método para cerra la conexión con la base de datos
+	 */
 	public static void closeConnection()
 	{
 		try {

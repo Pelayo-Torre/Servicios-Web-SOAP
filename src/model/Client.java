@@ -1,57 +1,38 @@
 package model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlTransient;
 
-import modelo.Hotel;
+import model.Hotel;
 
 public class Client {
 
-	private String name;
-	private String mail;
-	private String phone;
-	private Integer age;
-	private String dni;
 	private Long id;
-	
+	private String name;
+	private String dni;
+	private String telephone;
+	private String email;
+
+	private Set<Booking> bookings = new HashSet<Booking>();
 	private Hotel hotel;
-	
-	public Client() {}
-		
+
 	@XmlTransient
 	public Long getId() {
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public String getMail() {
-		return mail;
-	}
-	
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-	
-	public String getPhone() {
-		return phone;
-	}
-	
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public Integer getAge() {
-		return age;
-	}
-
-	public void setAge(Integer age) {
-		this.age = age;
 	}
 
 	public String getDni() {
@@ -61,7 +42,32 @@ public class Client {
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
-	
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@XmlTransient
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
 	@XmlTransient
 	public Hotel getHotel() {
 		return hotel;
@@ -71,9 +77,30 @@ public class Client {
 		this.hotel = hotel;
 	}
 
-	@Override
-	public String toString() {
-		return "Person [name=" + name + ", mail=" + mail + ", phone=" + phone + ", age=" + age + ", dni=" + dni + "]";
+	/**
+	 * Constructor
+	 */
+	public Client() {
+	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param name
+	 * @param dni
+	 * @param telephone
+	 * @param email
+	 * @param bookings
+	 * @param hotel
+	 */
+	public Client(String name, String dni, String telephone, String email, Set<Booking> bookings, Hotel hotel) {
+		super();
+		this.name = name;
+		this.dni = dni;
+		this.telephone = telephone;
+		this.email = email;
+		this.bookings = bookings;
+		this.hotel = hotel;
 	}
 
 }

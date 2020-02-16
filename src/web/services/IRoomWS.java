@@ -5,7 +5,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
-import modelo.Room;
+import model.Room;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)

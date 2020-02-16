@@ -1,12 +1,10 @@
-package modelo;
+package model;
 
 public class Address {
 	
 	private String street;
 	private String city;
 	private String postalCode;
-	
-	public Address() {}
 
 	public String getStreet() {
 		return street;
@@ -29,6 +27,24 @@ public class Address {
 	}
 
 	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+	
+	/**
+	 * Constructor
+	 */
+	public Address() {}
+
+	/**
+	 * Constructor
+	 * @param street
+	 * @param city
+	 * @param postalCode
+	 */
+	public Address(String street, String city, String postalCode) {
+		super();
+		this.street = street;
+		this.city = city;
 		this.postalCode = postalCode;
 	}
 	
