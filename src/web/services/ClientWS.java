@@ -1,72 +1,42 @@
 package web.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.jws.WebService;
 
+import exception.ClientException;
 import model.Client;
-import persistence.ManagerDAO;
-import persistence.client.ClientDAO;
-import validators.ClientValidator;
+import services.ClientService;
 
 @WebService(endpointInterface = "web.services.IClientWS")
 public class ClientWS implements IClientWS {
 
-	private ClientValidator clientValidator = new ClientValidator();
+	private ClientService clientService = new ClientService();
 
 	@Override
-	public String addClient(Client client) throws Exception {
-		clientValidator.validate(client);
-		try {
-			ClientDAO c = ManagerDAO.getInstance().getClientDAO();
-			client.setActive(true);
-			return c.addClient(client);
-		} catch (Exception e) {
-			throw new Exception();
-		}
+	public String addClient(Client client) throws ClientException, SQLException {
+		return clientService.add(client);
 	}
 
 	@Override
-	public String deleteClient(Long id) throws Exception {
-		try {
-			ClientDAO c = ManagerDAO.getInstance().getClientDAO();
-			return c.deleteClient(id);
-		} catch (Exception e) {
-			throw new Exception();
-		}
-
+	public String deleteClient(Long id) throws ClientException, SQLException {
+		return clientService.delete(id);
 	}
 
 	@Override
-	public String updateClient(Long id, Client client) throws Exception {
-		clientValidator.validate(client);
-		try {
-			ClientDAO c = ManagerDAO.getInstance().getClientDAO();
-			client.setId(id);
-			return c.updateClient(client);
-		} catch (Exception e) {
-			throw new Exception();
-		}
+	public String updateClient(Long id, Client client) throws ClientException, SQLException {
+		return clientService.update(id, client);
 	}
 
 	@Override
-	public Client listClient(Long id) throws Exception {
-		try {
-			ClientDAO c = ManagerDAO.getInstance().getClientDAO();
-			return c.getClient(id);
-		} catch (Exception e) {
-			throw new Exception();
-		}
+	public Client getClient(Long id) throws SQLException {
+		return clientService.listClient(id);
 	}
 
 	@Override
-	public List<Client> listClients() throws Exception {
-		try {
-			ClientDAO c = ManagerDAO.getInstance().getClientDAO();
-			return c.getClients();
-		} catch (Exception e) {
-			throw new Exception();
-		}
+	public List<Client> listClients() throws SQLException {
+		return clientService.listClients();
 	}
 
 }
