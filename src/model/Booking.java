@@ -15,6 +15,7 @@ public class Booking {
 	private Date startDate;
 	private Date endDate;
 	private double price;
+	private boolean cancelled;
 
 	private Client client;
 	private Set<Service> services = new HashSet<Service>();
@@ -88,6 +89,15 @@ public class Booking {
 		this.rooms = rooms;
 	}
 
+	@XmlTransient
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
+	}
+
 	/**
 	 * Constructor
 	 */
@@ -101,20 +111,21 @@ public class Booking {
 	 * @param startDate
 	 * @param endDate
 	 * @param price
+	 * @param cancelled
 	 * @param client
 	 * @param services
 	 * @param rooms
 	 */
-	public Booking(String code, Date startDate, Date endDate, double price, Client client, Set<Service> services,
-			Set<Room> rooms) {
+	public Booking(String code, Date startDate, Date endDate, double price, boolean cancelled, Client client,
+			Set<Service> services, Set<Room> rooms) {
 		super();
 		this.code = code;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.price = price;
+		this.cancelled = cancelled;
 		this.client = client;
 		this.services = services;
 		this.rooms = rooms;
 	}
-
 }

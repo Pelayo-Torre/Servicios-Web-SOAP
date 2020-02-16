@@ -1,30 +1,32 @@
 package services;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.ClientException;
 import model.Booking;
+import model.Client;
+import persistence.BookingDAO;
+import persistence.ClientDAO;
+import persistence.ManagerDAO;
+import validators.ClientValidator;
 
 public class BookingService {
 	
-	public void add(Booking booking) {
-		
-	}
-	
-	public void delete(Long id) {
-		
-	}
-	
-	public void update(Booking booking) {
-		
-	}
-	
-	public Booking getBooking(Long id) {
-		return new Booking();
-	}
-	
-	public List<Booking> getBookings(Long idClient){
-		return new ArrayList<Booking>();
+	private BookingDAO dao;
+
+	/**
+	 * Método para añadir una reserva
+	 * 
+	 * @param booking
+	 * @return
+	 * @throws SQLException
+	 */
+	public String addBooking(Booking booking) throws SQLException {
+		dao = ManagerDAO.getInstance().getBookingDAO();
+		booking.setCancelled(false);
+		return dao.addBooking(booking);
 	}
 
 }

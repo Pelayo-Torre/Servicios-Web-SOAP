@@ -5,8 +5,8 @@ import java.util.List;
 
 import exception.ClientException;
 import model.Client;
+import persistence.ClientDAO;
 import persistence.ManagerDAO;
-import persistence.client.ClientDAO;
 import validators.ClientValidator;
 
 public class ClientService {

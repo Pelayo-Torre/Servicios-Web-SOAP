@@ -14,18 +14,18 @@ import model.Booking;
 public interface IBookingWS {
 	
 	@WebMethod
-	public String add(Booking reservation);
+	public String add(Booking booking);
 	
 	@WebMethod
-	public String update(Booking reservation);
+	public String update(Long id, Booking booking);
 	
 	@WebMethod
 	public String delete(Long id);
 	
 	@WebMethod
-	public Booking getBooking(Long id);
+	public Booking listBooking(Long id);
 	
 	@WebMethod
-	public List<Booking> getBookings(Long idClient);
+	public List<Booking> listBookings(Long idClient);
 
 }
