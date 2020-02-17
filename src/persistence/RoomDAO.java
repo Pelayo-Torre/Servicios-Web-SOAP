@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Client;
 import model.Room;
+import model.RoomType;
 import utils.Constants;
 
 public class RoomDAO {
@@ -70,18 +70,18 @@ public class RoomDAO {
 	}
 
 	/**
-	 * Método para borrar el cliente cuyo id se pasa por parametro
+	 * Método para borrar la habitación cuyo id se pasa por parametro
 	 * 
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public String deleteClient(Long id) throws SQLException {
+	public String deleteRoom(Long id) throws SQLException {
 
 		try {
-			pst = con.prepareStatement("update client set active=? where id=?");
+			pst = con.prepareStatement("delete from room where id=?");
 			pst.setBoolean(1, false);
-			pst.setLong(2, id);
+			pst.setLong(1, id);
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {
@@ -92,19 +92,18 @@ public class RoomDAO {
 	}
 
 	/**
-	 * Método para actualizar el cliente que se pasa por parámetro
+	 * Método para actualizar la habitacion que se pasa por parámetro
 	 * 
 	 * @param client
 	 * @throws SQLException
 	 */
-	public String updateClient(Client client) throws SQLException {
+	public String updateRoom(Room room) throws SQLException {
 		try {
-			pst = con.prepareStatement("update client set name=?, dni=?, telephone=?, email=? where id=?");
-			pst.setString(1, client.getName());
-			pst.setString(2, client.getDni());
-			pst.setString(3, client.getTelephone());
-			pst.setString(4, client.getEmail());
-			pst.setInt(5, client.getId().intValue());
+			pst = con.prepareStatement("update room set code=?, price=?, type=? where id=?");
+			pst.setString(1, room.getCode());
+			pst.setDouble(2, room.getPrice());
+			pst.setString(3, room.getRoomType().name());
+			pst.setInt(4, room.getId().intValue());
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {
@@ -115,25 +114,24 @@ public class RoomDAO {
 	}
 
 	/**
-	 * Método para obtener el cliente cuyo id se pasa por parametro
+	 * Método para obtener la habitación cuyo id se pasa por parametro
 	 * 
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public Client listClient(Long id) throws SQLException {
+	public Room listRoom(Long id) throws SQLException {
 
 		try {
-			pst = con.prepareStatement("select name, dni, telephone, email from client where id=?");
+			pst = con.prepareStatement("select code, price, type from room where id=?");
 			pst.setLong(1, id);
 			rs = pst.executeQuery();
 			if (rs.next()) {
-				Client c = new Client();
-				c.setName(rs.getString(1));
-				c.setDni(rs.getString(2));
-				c.setTelephone(rs.getString(3));
-				c.setEmail(rs.getString(4));
-				return c;
+				Room r = new Room();
+				r.setCode(rs.getString(1));
+				r.setPrice(rs.getDouble(2));
+				r.setRoomType(RoomType.valueOf(rs.getString(3)));
+				return r;
 			}
 			return null;
 		} catch (SQLException e) {
@@ -145,28 +143,60 @@ public class RoomDAO {
 	}
 
 	/**
-	 * Método para obtener los clientes
+	 * Método para obtener las habitaciones del hotel que se pasa por parametro
 	 * 
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public List<Client> listClients() throws SQLException {
+	public List<Room> listRoomsOfHotel(Long hotelId) throws SQLException {
 
-		List<Client> clients = new ArrayList<Client>();
+		List<Room> rooms = new ArrayList<Room>();
 
 		try {
-			pst = con.prepareStatement("select name, dni, telephone, email from client");
+			pst = con.prepareStatement("code, price, type from room where hotelId=?");
+			pst.setLong(1, hotelId);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				Client c = new Client();
-				c.setName(rs.getString(1));
-				c.setDni(rs.getString(2));
-				c.setTelephone(rs.getString(3));
-				c.setEmail(rs.getString(4));
-				clients.add(c);
+				Room r = new Room();
+				r.setCode(rs.getString(1));
+				r.setPrice(rs.getDouble(2));
+				r.setRoomType(RoomType.valueOf(rs.getString(3)));
+				rooms.add(r);
 			}
-			return clients;
+			return rooms;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			rs.close();
+			pst.close();
+		}
+	}
+	
+	/**
+	 * Método para obtener las habitaciones de la reserva que se pasa por parametro
+	 * 
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public List<Room> listRoomsOfBooking(Long bookingId) throws SQLException {
+
+		List<Room> rooms = new ArrayList<Room>();
+
+		try {
+			//TODO corregir, las habitaciones estan asignadas a mas de una reserva
+			pst = con.prepareStatement("code, price, type from room where hotelId=?");
+			pst.setLong(1, bookingId);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				Room r = new Room();
+				r.setCode(rs.getString(1));
+				r.setPrice(rs.getDouble(2));
+				r.setRoomType(RoomType.valueOf(rs.getString(3)));
+				rooms.add(r);
+			}
+			return rooms;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

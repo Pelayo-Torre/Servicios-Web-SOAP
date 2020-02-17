@@ -1,17 +1,13 @@
 package services;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import exception.ClientException;
 import exception.RoomException;
-import model.Client;
 import model.Room;
-import persistence.ClientDAO;
 import persistence.ManagerDAO;
 import persistence.RoomDAO;
-import validators.ClientValidator;
 import validators.RoomValidator;
 
 public class RoomService {
@@ -25,7 +21,7 @@ public class RoomService {
 	 * @param client
 	 * @return
 	 * @throws SQLException
-	 * @throws RoomException 
+	 * @throws RoomException
 	 * @throws ClientException
 	 */
 	public String addRoom(Room room) throws SQLException, RoomException {
@@ -35,63 +31,62 @@ public class RoomService {
 	}
 
 	/**
-	 * Método para borrar un cliente
+	 * Método para borrar una habitación
 	 * 
 	 * @param id
 	 * @return
 	 * @throws SQLException
-	 * @throws ClientException
+	 * @throws RoomException
 	 */
-	public String deleteClient(Long id) throws SQLException, ClientException {
-		dao = ManagerDAO.getInstance().getClientDAO();
+	public String deleteRoom(Long id) throws SQLException, RoomException {
+		dao = ManagerDAO.getInstance().getRoomDAO();
 
-		Client c = dao.listClient(id);
-		if (c == null)
-			throw new ClientException("El cliente que se desea eliminar no existe", "404");
+		Room r = dao.listRoom(id);
+		if (r == null)
+			throw new RoomException("La habitación que se desea eliminar no existe", "404");
 
-		return dao.deleteClient(id);
+		return dao.deleteRoom(id);
 	}
 
 	/**
-	 * Método para actualizar el cliente que se pasa por parámetro
+	 * Método para actualizar la habitación que se pasa por parámetro
 	 * 
-	 * @param client
+	 * @param room
 	 * @return
 	 * @throws SQLException
 	 * @throws ClientException
 	 */
-	public String updateClient(Long id, Client client) throws SQLException, ClientException {
-		roomValidator.validate(client);
-		dao = ManagerDAO.getInstance().getClientDAO();
-		Client c = dao.listClient(id);
-		if (c == null)
-			throw new ClientException("El cliente que se desea eliminar no existe", "404");
-		client.setId(id);
-		return dao.updateClient(client);
+	public String updateRoom(Long id, Room room) throws SQLException, RoomException {
+		roomValidator.validate(room);
+		dao = ManagerDAO.getInstance().getRoomDAO();
+		Room r = dao.listRoom(id);
+		if (r == null)
+			throw new RoomException("La habitación que se desea eliminar no existe", "404");
+		room.setId(id);
+		return dao.updateRoom(room);
 	}
 
 	/**
-	 * Método para obtener el cliente cuyo id se pasa por parámetro
+	 * Método para obtener la habitación cuyo id se pasa por parámetro
 	 * 
 	 * @param id
 	 * @return
 	 * @throws SQLException
 	 */
-	public Client listClient(Long id) throws SQLException {
-		dao = ManagerDAO.getInstance().getClientDAO();
-		return dao.listClient(id);
+	public Room listRoom(Long id) throws SQLException {
+		dao = ManagerDAO.getInstance().getRoomDAO();
+		return dao.listRoom(id);
 	}
 
 	/**
-	 * Método para obtener la lista de clientes
+	 * Método para obtener la lista de habitaciones de un hotel
 	 * 
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Client> listClients() throws SQLException {
-		dao = ManagerDAO.getInstance().getClientDAO();
-		return dao.listClients();
+	public List<Room> listRooms(Long hotelId) throws SQLException {
+		dao = ManagerDAO.getInstance().getRoomDAO();
+		return dao.listRoomsOfHotel(hotelId);
 	}
 
-	
 }
