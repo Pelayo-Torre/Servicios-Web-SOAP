@@ -10,7 +10,6 @@ import java.util.List;
 
 import model.Booking;
 import utils.Constants;
-import utils.DateUtils;
 
 public class BookingDAO {
 
@@ -39,8 +38,8 @@ public class BookingDAO {
 			pst = con.prepareStatement("insert into booking values(?,?,?,?,?,?)");
 			pst.setInt(1, id);
 			pst.setString(2, booking.getCode());
-			pst.setString(3, DateUtils.convertDateToString(booking.getStartDate()));
-			pst.setString(4, DateUtils.convertDateToString(booking.getEndDate()));
+			pst.setString(3, booking.getStartDate());
+			pst.setString(4, booking.getEndDate());
 			pst.setDouble(5, booking.getPrice());
 			pst.setBoolean(6, booking.isCancelled());
 			int row = pst.executeUpdate();
@@ -83,7 +82,7 @@ public class BookingDAO {
 
 		try {
 			pst = con.prepareStatement("update booking set cancelled=? where id=?");
-			pst.setBoolean(1, false);
+			pst.setBoolean(1, true);
 			pst.setLong(2, id);
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
@@ -104,8 +103,8 @@ public class BookingDAO {
 		try {
 			pst = con.prepareStatement("update booking set code=?, startdate=?, enddate=?, price=? where id=?");
 			pst.setString(1, booking.getCode());
-			pst.setString(2, DateUtils.convertDateToString(booking.getStartDate()));
-			pst.setString(3, DateUtils.convertDateToString(booking.getEndDate()));
+			pst.setString(2, booking.getStartDate());
+			pst.setString(3, booking.getEndDate());
 			pst.setDouble(4, booking.getPrice());
 			pst.setInt(5, booking.getId().intValue());
 			int row = pst.executeUpdate();
@@ -134,8 +133,8 @@ public class BookingDAO {
 			if (rs.next()) {
 				Booking b = new Booking();
 				b.setCode(rs.getString(1));
-				b.setStartDate(DateUtils.convertStringToDate(rs.getString(2)));
-				b.setEndDate(DateUtils.convertStringToDate(rs.getString(3)));
+				b.setStartDate(rs.getString(2));
+				b.setEndDate(rs.getString(3));
 				b.setPrice(rs.getDouble(4));
 				return b;
 			}
@@ -156,19 +155,19 @@ public class BookingDAO {
 	 * @throws ParseException
 	 * @throws Exception
 	 */
-	public List<Booking> listBookings(Long idClient) throws SQLException, ParseException {
+	public List<Booking> listBookings(Long clientId) throws SQLException, ParseException {
 
 		List<Booking> bookings = new ArrayList<Booking>();
 
 		try {
 			pst = con.prepareStatement("select code, startdate, enddate, price from booking where clientId=?");
-			pst.setLong(1, idClient);
+			pst.setLong(1, clientId);
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				Booking b = new Booking();
 				b.setCode(rs.getString(1));
-				b.setStartDate(DateUtils.convertStringToDate(rs.getString(2)));
-				b.setEndDate(DateUtils.convertStringToDate(rs.getString(3)));
+				b.setStartDate(rs.getString(2));
+				b.setEndDate(rs.getString(3));
 				b.setPrice(rs.getDouble(4));
 				bookings.add(b);
 			}

@@ -14,21 +14,21 @@ import model.Room;
 public interface IRoomWS {
 	
 	@WebMethod
-	public String add(Room room);
+	public String addRoom(Room room);
 	
 	@WebMethod
-	public String update(Room room);
+	public String deleteRoom(Long id);
+	
+	@WebMethod
+	public String updateRoom(Long id, Room room);
 
 	@WebMethod
-	public Room getRoom(Long id);
+	public Room listRoom(Long id);
 	
 	@WebMethod
-	public String delete(Long id);
+	public List<Room> listRoomsOfHotel(Long hotelId);
 	
 	@WebMethod
-	public List<Room> getRoomsOfClient(Long idClient);
-	
-	@WebMethod
-	public List<Room> getRoomsOfHotel(Long idHotel);
+	public List<Room> listRoomsOfBooking(Long bookingId);
 	
 }

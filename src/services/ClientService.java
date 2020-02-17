@@ -22,7 +22,7 @@ public class ClientService {
 	 * @throws SQLException
 	 * @throws ClientException
 	 */
-	public String add(Client client) throws SQLException, ClientException {
+	public String addClient(Client client) throws SQLException, ClientException {
 		clientValidator.validate(client);
 		dao = ManagerDAO.getInstance().getClientDAO();
 		client.setActive(true);
@@ -37,7 +37,7 @@ public class ClientService {
 	 * @throws SQLException
 	 * @throws ClientException
 	 */
-	public String delete(Long id) throws SQLException, ClientException {
+	public String deleteClient(Long id) throws SQLException, ClientException {
 		dao = ManagerDAO.getInstance().getClientDAO();
 
 		Client c = dao.listClient(id);
@@ -55,7 +55,7 @@ public class ClientService {
 	 * @throws SQLException
 	 * @throws ClientException
 	 */
-	public String update(Long id, Client client) throws SQLException, ClientException {
+	public String updateClient(Long id, Client client) throws SQLException, ClientException {
 		clientValidator.validate(client);
 		dao = ManagerDAO.getInstance().getClientDAO();
 		Client c = dao.listClient(id);

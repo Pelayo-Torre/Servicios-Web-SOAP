@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,8 +11,8 @@ public class Booking {
 
 	private Long id;
 	private String code;
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private double price;
 	private boolean cancelled;
 
@@ -38,19 +37,19 @@ public class Booking {
 		this.code = code;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 
@@ -116,7 +115,7 @@ public class Booking {
 	 * @param services
 	 * @param rooms
 	 */
-	public Booking(String code, Date startDate, Date endDate, double price, boolean cancelled, Client client,
+	public Booking(String code, String startDate, String endDate, double price, boolean cancelled, Client client,
 			Set<Service> services, Set<Room> rooms) {
 		super();
 		this.code = code;

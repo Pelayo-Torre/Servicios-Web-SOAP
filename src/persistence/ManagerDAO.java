@@ -8,6 +8,7 @@ public class ManagerDAO {
 	protected Connection connection = null;
 	protected ClientDAO clientDAO = null;
 	protected BookingDAO bookingDAO = null;
+	protected RoomDAO roomDAO = null;
 
 	/**
 	 * Método para obtener una instancia de ManagerDAO
@@ -46,4 +47,15 @@ public class ManagerDAO {
 		return managerDAO.bookingDAO;
 	}
 
+	/**
+	 * Método para obtener una instacia de RoomDAO
+	 * 
+	 * @return
+	 */
+	public RoomDAO getRoomDAO() {
+		if (managerDAO.roomDAO == null) {
+			managerDAO.roomDAO = new RoomDAO(managerDAO.connection);
+		}
+		return managerDAO.roomDAO;
+	}
 }

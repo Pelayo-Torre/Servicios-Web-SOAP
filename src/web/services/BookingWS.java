@@ -1,45 +1,43 @@
 package web.services;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.jws.WebService;
 
+import exception.BookingException;
 import model.Booking;
 import services.BookingService;
-import utils.Constants;
 
 @WebService(endpointInterface = "web.services.IBookingWS")
-public class BookingWS implements IBookingWS{
+public class BookingWS implements IBookingWS {
 
 	private BookingService bookingService = new BookingService();
-	
+
 	@Override
-	public String add(Booking booking) {
-		
-		return Constants.RESPONSE_OK;
+	public String addBooking(Booking booking) throws SQLException, BookingException, ParseException {
+		return bookingService.addBooking(booking);
 	}
 
 	@Override
-	public String update(Long id, Booking booking) {
-		
-		return null;
+	public String updateBooking(Long id, Booking booking) throws BookingException, SQLException, ParseException {
+		return bookingService.updateBooking(id, booking);
 	}
 
 	@Override
-	public String delete(Long id) {
-		
-		return Constants.RESPONSE_OK;
+	public String deleteBooking(Long id) throws BookingException, SQLException, ParseException {
+		return bookingService.deleteBooking(id);
 	}
 
 	@Override
-	public Booking listBooking(Long id) {
-		return null;
+	public Booking listBooking(Long id) throws SQLException, ParseException {
+		return bookingService.listBooking(id);
 	}
 
 	@Override
-	public List<Booking> listBookings(Long idClient) {
-		return new ArrayList<Booking>();
+	public List<Booking> listBookings(Long clientId) throws SQLException, ParseException {
+		return bookingService.listBookings(clientId);
 	}
 
 }

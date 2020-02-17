@@ -16,17 +16,17 @@ public class ClientWS implements IClientWS {
 
 	@Override
 	public String addClient(Client client) throws ClientException, SQLException {
-		return clientService.add(client);
+		return clientService.addClient(client);
 	}
 
 	@Override
 	public String deleteClient(Long id) throws ClientException, SQLException {
-		return clientService.delete(id);
+		return clientService.deleteClient(id);
 	}
 
 	@Override
 	public String updateClient(Long id, Client client) throws ClientException, SQLException {
-		return clientService.update(id, client);
+		return clientService.updateClient(id, client);
 	}
 
 	@Override
