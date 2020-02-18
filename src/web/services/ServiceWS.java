@@ -1,49 +1,42 @@
 package web.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.jws.WebService;
 
+import exception.ServiceException;
 import model.Service;
 import services.ServiceService;
-import utils.Constants;
 
 @WebService(endpointInterface = "web.services.IServiceWS")
-public class ServiceWS implements IServiceWS{
+public class ServiceWS implements IServiceWS {
 
 	ServiceService serviceService = new ServiceService();
-	
+
 	@Override
-	public String add(Service service) {
-		serviceService.add(service);
-		return Constants.RESPONSE_OK;
+	public String addService(Service service) throws ServiceException, SQLException {
+		return serviceService.addService(service);
 	}
 
 	@Override
-	public String update(Service service) {
-		serviceService.update(service);
-		return Constants.RESPONSE_OK;
+	public String deleteService(Long id) throws ServiceException, SQLException {
+		return serviceService.deleteService(id);
 	}
 
 	@Override
-	public Service getService(Long id) {
-		return serviceService.getService(id);
+	public String updateService(Long id, Service service) throws ServiceException, SQLException {
+		return serviceService.updateService(id, service);
 	}
 
 	@Override
-	public String delete(Long id) {
-		serviceService.delete(id);
-		return Constants.RESPONSE_OK;
+	public Service listService(Long id) throws SQLException {
+		return serviceService.listService(id);
 	}
 
 	@Override
-	public List<Service> getServicesOfBooking(Long idBooking) {
-		return serviceService.getServicesOfBooking(idBooking);
-	}
-
-	@Override
-	public List<Service> getServicesOfHotel(Long idHotel) {
-		return serviceService.getServicesOfHotel(idHotel);
+	public List<Service> listServicesOfHotel(Long hotelId) throws SQLException {
+		return serviceService.listServicesOfHotel(hotelId);
 	}
 
 }

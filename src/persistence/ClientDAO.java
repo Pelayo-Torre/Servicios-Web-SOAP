@@ -146,18 +146,19 @@ public class ClientDAO {
 	}
 
 	/**
-	 * Método para obtener los clientes
+	 * Método para obtener los clientes del hotel que se pasa por parametro
 	 * 
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public List<Client> listClients() throws SQLException {
+	public List<Client> listClients(Long hotelId) throws SQLException {
 
 		List<Client> clients = new ArrayList<Client>();
 
 		try {
-			pst = con.prepareStatement("select name, dni, telephone, email from client");
+			pst = con.prepareStatement("select name, dni, telephone, email from client where hotelId=?");
+			pst.setLong(1, hotelId);
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				Client c = new Client();

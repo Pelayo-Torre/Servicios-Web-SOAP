@@ -27,6 +27,6 @@ public interface IClientWS {
 	public Client listClient(Long id) throws Exception;
 
 	@WebMethod
-	public List<Client> listClients() throws Exception;
+	public List<Client> listClientsOfHotel(Long hotelId) throws Exception;
 
 }

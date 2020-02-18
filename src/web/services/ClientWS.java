@@ -35,8 +35,8 @@ public class ClientWS implements IClientWS {
 	}
 
 	@Override
-	public List<Client> listClients() throws SQLException {
-		return clientService.listClients();
+	public List<Client> listClientsOfHotel(Long hotelId) throws SQLException {
+		return clientService.listClientsOfHotel(hotelId);
 	}
 
 }

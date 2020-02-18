@@ -3,7 +3,6 @@ package services;
 import java.sql.SQLException;
 import java.util.List;
 
-import exception.ClientException;
 import exception.RoomException;
 import model.Room;
 import persistence.ManagerDAO;
@@ -12,21 +11,19 @@ import validators.RoomValidator;
 
 public class RoomService {
 
-	private RoomDAO dao;
+	private RoomDAO dao = ManagerDAO.getInstance().getRoomDAO();
 	private RoomValidator roomValidator = new RoomValidator();
 
 	/**
 	 * Método para añadir una habitacion
 	 * 
-	 * @param client
+	 * @param room
 	 * @return
 	 * @throws SQLException
 	 * @throws RoomException
-	 * @throws ClientException
 	 */
 	public String addRoom(Room room) throws SQLException, RoomException {
 		roomValidator.validate(room);
-		dao = ManagerDAO.getInstance().getRoomDAO();
 		return dao.addRoom(room);
 	}
 
@@ -39,8 +36,6 @@ public class RoomService {
 	 * @throws RoomException
 	 */
 	public String deleteRoom(Long id) throws SQLException, RoomException {
-		dao = ManagerDAO.getInstance().getRoomDAO();
-
 		Room r = dao.listRoom(id);
 		if (r == null)
 			throw new RoomException("La habitación que se desea eliminar no existe", "404");
@@ -54,11 +49,10 @@ public class RoomService {
 	 * @param room
 	 * @return
 	 * @throws SQLException
-	 * @throws ClientException
+	 * @throws RoomException
 	 */
 	public String updateRoom(Long id, Room room) throws SQLException, RoomException {
 		roomValidator.validate(room);
-		dao = ManagerDAO.getInstance().getRoomDAO();
 		Room r = dao.listRoom(id);
 		if (r == null)
 			throw new RoomException("La habitación que se desea eliminar no existe", "404");
@@ -74,7 +68,6 @@ public class RoomService {
 	 * @throws SQLException
 	 */
 	public Room listRoom(Long id) throws SQLException {
-		dao = ManagerDAO.getInstance().getRoomDAO();
 		return dao.listRoom(id);
 	}
 
@@ -85,7 +78,6 @@ public class RoomService {
 	 * @throws SQLException
 	 */
 	public List<Room> listRooms(Long hotelId) throws SQLException {
-		dao = ManagerDAO.getInstance().getRoomDAO();
 		return dao.listRoomsOfHotel(hotelId);
 	}
 

@@ -5,20 +5,15 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import model.Client;
-
 public class Hotel {
 
 	private Long id;
 	private String name;
 	private Location location;
+	private String country;
 	private int stars;
 	private String telephone;
-
-	private Address address;
-
-	private Integer totalRooms;
-	private String country;
+	private String address;
 
 	private Set<Client> clients = new HashSet<Client>();
 	private Set<Room> rooms = new HashSet<Room>();
@@ -49,6 +44,14 @@ public class Hotel {
 		this.location = location;
 	}
 
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
 	public int getStars() {
 		return stars;
 	}
@@ -65,28 +68,12 @@ public class Hotel {
 		this.telephone = telephone;
 	}
 
-	public Address getAddress() {
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(Address address) {
+	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public Integer getTotalRooms() {
-		return totalRooms;
-	}
-
-	public void setTotalRooms(Integer totalRooms) {
-		this.totalRooms = totalRooms;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
 	}
 
 	@XmlTransient
@@ -126,25 +113,23 @@ public class Hotel {
 	 * 
 	 * @param name
 	 * @param location
+	 * @param country
 	 * @param stars
 	 * @param telephone
 	 * @param address
-	 * @param totalRooms
-	 * @param country
 	 * @param clients
 	 * @param rooms
 	 * @param services
 	 */
-	public Hotel(String name, Location location, int stars, String telephone, Address address, Integer totalRooms,
-			String country, Set<Client> clients, Set<Room> rooms, Set<Service> services) {
+	public Hotel(String name, Location location, String country, int stars, String telephone, String address,
+			Set<Client> clients, Set<Room> rooms, Set<Service> services) {
 		super();
 		this.name = name;
 		this.location = location;
+		this.country = country;
 		this.stars = stars;
 		this.telephone = telephone;
 		this.address = address;
-		this.totalRooms = totalRooms;
-		this.country = country;
 		this.clients = clients;
 		this.rooms = rooms;
 		this.services = services;

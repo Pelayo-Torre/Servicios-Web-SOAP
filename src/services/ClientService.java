@@ -11,7 +11,7 @@ import validators.ClientValidator;
 
 public class ClientService {
 
-	private ClientDAO dao;
+	private ClientDAO dao = ManagerDAO.getInstance().getClientDAO();
 	private ClientValidator clientValidator = new ClientValidator();
 
 	/**
@@ -24,7 +24,6 @@ public class ClientService {
 	 */
 	public String addClient(Client client) throws SQLException, ClientException {
 		clientValidator.validate(client);
-		dao = ManagerDAO.getInstance().getClientDAO();
 		client.setActive(true);
 		return dao.addClient(client);
 	}
@@ -38,8 +37,6 @@ public class ClientService {
 	 * @throws ClientException
 	 */
 	public String deleteClient(Long id) throws SQLException, ClientException {
-		dao = ManagerDAO.getInstance().getClientDAO();
-
 		Client c = dao.listClient(id);
 		if (c == null)
 			throw new ClientException("El cliente que se desea eliminar no existe", "404");
@@ -57,7 +54,6 @@ public class ClientService {
 	 */
 	public String updateClient(Long id, Client client) throws SQLException, ClientException {
 		clientValidator.validate(client);
-		dao = ManagerDAO.getInstance().getClientDAO();
 		Client c = dao.listClient(id);
 		if (c == null)
 			throw new ClientException("El cliente que se desea eliminar no existe", "404");
@@ -73,19 +69,17 @@ public class ClientService {
 	 * @throws SQLException
 	 */
 	public Client listClient(Long id) throws SQLException {
-		dao = ManagerDAO.getInstance().getClientDAO();
 		return dao.listClient(id);
 	}
 
 	/**
-	 * Método para obtener la lista de clientes
+	 * Método para obtener la lista de clientes del hotel que se pasa por parametro
 	 * 
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Client> listClients() throws SQLException {
-		dao = ManagerDAO.getInstance().getClientDAO();
-		return dao.listClients();
+	public List<Client> listClientsOfHotel(Long hotelId) throws SQLException {
+		return dao.listClients(hotelId);
 	}
 
 }

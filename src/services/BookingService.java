@@ -12,7 +12,7 @@ import validators.BookingValidator;
 
 public class BookingService {
 
-	private BookingDAO dao;
+	private BookingDAO dao = ManagerDAO.getInstance().getBookingDAO();;
 	private BookingValidator bookingValidator = new BookingValidator();
 
 	/**
@@ -21,12 +21,11 @@ public class BookingService {
 	 * @param booking
 	 * @return
 	 * @throws SQLException
-	 * @throws BookingException 
-	 * @throws ParseException 
+	 * @throws BookingException
+	 * @throws ParseException
 	 */
 	public String addBooking(Booking booking) throws SQLException, BookingException, ParseException {
 		bookingValidator.validate(booking);
-		dao = ManagerDAO.getInstance().getBookingDAO();
 		booking.setCancelled(false);
 		return dao.addBooking(booking);
 	}
@@ -41,8 +40,6 @@ public class BookingService {
 	 * @throws ParseException
 	 */
 	public String deleteBooking(Long id) throws SQLException, BookingException, ParseException {
-		dao = ManagerDAO.getInstance().getBookingDAO();
-
 		Booking b = dao.listBooking(id);
 		if (b == null)
 			throw new BookingException("La reserva que se desea eliminar no existe", "404");
@@ -53,7 +50,7 @@ public class BookingService {
 	/**
 	 * Método para actualizar la reserva que se pasa por parámetro
 	 * 
-	 * @param client
+	 * @param booking
 	 * @return
 	 * @throws SQLException
 	 * @throws BookingException
@@ -61,7 +58,6 @@ public class BookingService {
 	 */
 	public String updateBooking(Long id, Booking booking) throws SQLException, BookingException, ParseException {
 		bookingValidator.validate(booking);
-		dao = ManagerDAO.getInstance().getBookingDAO();
 		Booking b = dao.listBooking(id);
 		if (b == null)
 			throw new BookingException("La reserva que se desea eliminar no existe", "404");
@@ -78,7 +74,6 @@ public class BookingService {
 	 * @throws ParseException
 	 */
 	public Booking listBooking(Long id) throws SQLException, ParseException {
-		dao = ManagerDAO.getInstance().getBookingDAO();
 		return dao.listBooking(id);
 	}
 
@@ -91,7 +86,6 @@ public class BookingService {
 	 * @throws ParseException
 	 */
 	public List<Booking> listBookings(Long clientId) throws SQLException, ParseException {
-		dao = ManagerDAO.getInstance().getBookingDAO();
 		return dao.listBookings(clientId);
 	}
 
