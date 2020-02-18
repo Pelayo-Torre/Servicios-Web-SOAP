@@ -1,4 +1,5 @@
 <endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0">
+	<endpoint name="WebServiceImpl" implementation="web.services.HotelWS" url-pattern="/soapws/hotel" />
 	<endpoint name="WebServiceImpl" implementation="web.services.ClientWS" url-pattern="/soapws/client" />
 	<endpoint name="WebServiceImpl" implementation="web.services.BookingWS" url-pattern="/soapws/booking" />
 	<endpoint name="WebServiceImpl" implementation="web.services.RoomWS" url-pattern="/soapws/room" />

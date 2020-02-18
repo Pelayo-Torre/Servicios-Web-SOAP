@@ -1,8 +1,4 @@
-/exception/
-/model/
-/modelo/
 /persistence/
-/utils/
+/services/
 /validators/
 /web/
-/services/
