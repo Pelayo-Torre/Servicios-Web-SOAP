@@ -94,6 +94,7 @@ public class Hotel {
 		this.rooms = rooms;
 	}
 
+	@XmlTransient
 	public Set<Service> getServices() {
 		return services;
 	}
