@@ -24,6 +24,7 @@ public class HotelService {
 	 */
 	public String addHotel(Hotel hotel) throws SQLException, HotelException {
 		hotelValidator.validate(hotel);
+		hotel.setDeleted(false);
 		return dao.addHotel(hotel);
 	}
 
@@ -39,7 +40,6 @@ public class HotelService {
 		Hotel h = dao.listHotel(id);
 		if (h == null)
 			throw new HotelException("El hotel que se desea eliminar no existe", "404");
-
 		return dao.deleteHotel(id);
 	}
 

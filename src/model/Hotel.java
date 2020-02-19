@@ -14,6 +14,7 @@ public class Hotel {
 	private int stars;
 	private String telephone;
 	private String address;
+	private boolean deleted;
 
 	private Set<Client> clients = new HashSet<Client>();
 	private Set<Room> rooms = new HashSet<Room>();
@@ -76,6 +77,14 @@ public class Hotel {
 		this.address = address;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	@XmlTransient
 	public Set<Client> getClients() {
 		return clients;
@@ -109,21 +118,8 @@ public class Hotel {
 	public Hotel() {
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param name
-	 * @param location
-	 * @param country
-	 * @param stars
-	 * @param telephone
-	 * @param address
-	 * @param clients
-	 * @param rooms
-	 * @param services
-	 */
 	public Hotel(String name, Location location, String country, int stars, String telephone, String address,
-			Set<Client> clients, Set<Room> rooms, Set<Service> services) {
+			boolean deleted, Set<Client> clients, Set<Room> rooms, Set<Service> services) {
 		super();
 		this.name = name;
 		this.location = location;
@@ -131,6 +127,7 @@ public class Hotel {
 		this.stars = stars;
 		this.telephone = telephone;
 		this.address = address;
+		this.deleted = deleted;
 		this.clients = clients;
 		this.rooms = rooms;
 		this.services = services;

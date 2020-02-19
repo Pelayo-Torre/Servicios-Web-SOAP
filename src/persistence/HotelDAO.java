@@ -35,7 +35,7 @@ public class HotelDAO {
 	public String addHotel(Hotel hotel) throws SQLException {
 		try {
 			int id = getMaxId() + 1;
-			pst = con.prepareStatement("insert into hotel values(?,?,?,?,?,?,?,?)");
+			pst = con.prepareStatement("insert into hotel values(?,?,?,?,?,?,?,?,?)");
 			pst.setInt(1, id);
 			pst.setString(2, hotel.getName());
 			pst.setDouble(3, hotel.getLocation().getLatitude());
@@ -44,6 +44,7 @@ public class HotelDAO {
 			pst.setInt(6, hotel.getStars());
 			pst.setString(7, hotel.getTelephone());
 			pst.setString(8, hotel.getAddress());
+			pst.setBoolean(9, hotel.isDeleted());
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {
@@ -83,8 +84,9 @@ public class HotelDAO {
 	public String deleteHotel(Long id) throws SQLException {
 
 		try {
-			pst = con.prepareStatement("delete from hotel where id=?");
-			pst.setLong(1, id);
+			pst = con.prepareStatement("update hotel set deleted=? where id=?");
+			pst.setBoolean(1, true);
+			pst.setLong(2, id);
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {
