@@ -12,7 +12,7 @@ public class Service {
 	private String code;
 	private Double price;
 
-	private Hotel hotel;
+	private Long hotelId;
 	private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
@@ -48,13 +48,12 @@ public class Service {
 		this.price = price;
 	}
 
-	@XmlTransient
-	public Hotel getHotel() {
-		return hotel;
+	public Long getHotelId() {
+		return hotelId;
 	}
 
-	public void setHotel(Hotel hotel) {
-		this.hotel = hotel;
+	public void setHotelId(Long hotelId) {
+		this.hotelId = hotelId;
 	}
 
 	@XmlTransient
@@ -78,15 +77,15 @@ public class Service {
 	 * @param name
 	 * @param code
 	 * @param price
-	 * @param hotel
+	 * @param hotelId
 	 * @param bookings
 	 */
-	public Service(String name, String code, double price, Hotel hotel, Set<Booking> bookings) {
+	public Service(String name, String code, double price, Long hotelId, Set<Booking> bookings) {
 		super();
 		this.name = name;
 		this.code = code;
 		this.price = price;
-		this.hotel = hotel;
+		this.hotelId = hotelId;
 		this.bookings = bookings;
 	}
 

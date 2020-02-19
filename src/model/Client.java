@@ -5,8 +5,6 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import model.Hotel;
-
 public class Client {
 
 	private Long id;
@@ -16,8 +14,8 @@ public class Client {
 	private String email;
 	private boolean active;
 
+	private Long hotelId;
 	private Set<Booking> bookings = new HashSet<Booking>();
-	private Hotel hotel;
 
 	@XmlTransient
 	public Long getId() {
@@ -61,30 +59,29 @@ public class Client {
 	}
 
 	@XmlTransient
-	public Set<Booking> getBookings() {
-		return bookings;
-	}
-
-	public void setBookings(Set<Booking> bookings) {
-		this.bookings = bookings;
-	}
-
-	@XmlTransient
-	public Hotel getHotel() {
-		return hotel;
-	}
-
-	public void setHotel(Hotel hotel) {
-		this.hotel = hotel;
-	}
-
-	@XmlTransient
 	public boolean isActive() {
 		return active;
 	}
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public Long getHotelId() {
+		return hotelId;
+	}
+
+	public void setHotelId(Long hotelId) {
+		this.hotelId = hotelId;
+	}
+
+	@XmlTransient
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
 	}
 
 	/**
@@ -101,19 +98,19 @@ public class Client {
 	 * @param telephone
 	 * @param email
 	 * @param active
+	 * @param hotelId
 	 * @param bookings
-	 * @param hotel
 	 */
-	public Client(String name, String dni, String telephone, String email, boolean active, Set<Booking> bookings,
-			Hotel hotel) {
+	public Client(String name, String dni, String telephone, String email, boolean active, Long hotelId,
+			Set<Booking> bookings) {
 		super();
 		this.name = name;
 		this.dni = dni;
 		this.telephone = telephone;
 		this.email = email;
 		this.active = active;
+		this.hotelId = hotelId;
 		this.bookings = bookings;
-		this.hotel = hotel;
 	}
 
 }

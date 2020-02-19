@@ -5,8 +5,6 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import model.Client;
-
 public class Booking {
 
 	private Long id;
@@ -16,7 +14,7 @@ public class Booking {
 	private double price;
 	private boolean cancelled;
 
-	private Client client;
+	private Long clientId;
 	private Set<Service> services = new HashSet<Service>();
 	private Set<Room> rooms = new HashSet<Room>();
 
@@ -57,17 +55,16 @@ public class Booking {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
-	@XmlTransient
-	public Client getClient() {
-		return client;
+	public Long getClientId() {
+		return clientId;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
 	}
 
 	@XmlTransient
@@ -111,11 +108,11 @@ public class Booking {
 	 * @param endDate
 	 * @param price
 	 * @param cancelled
-	 * @param client
+	 * @param clientId
 	 * @param services
 	 * @param rooms
 	 */
-	public Booking(String code, String startDate, String endDate, double price, boolean cancelled, Client client,
+	public Booking(String code, String startDate, String endDate, double price, boolean cancelled, Long clientId,
 			Set<Service> services, Set<Room> rooms) {
 		super();
 		this.code = code;
@@ -123,7 +120,7 @@ public class Booking {
 		this.endDate = endDate;
 		this.price = price;
 		this.cancelled = cancelled;
-		this.client = client;
+		this.clientId = clientId;
 		this.services = services;
 		this.rooms = rooms;
 	}

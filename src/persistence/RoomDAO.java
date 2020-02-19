@@ -35,11 +35,12 @@ public class RoomDAO {
 	public String addRoom(Room room) throws SQLException {
 		try {
 			int id = getMaxId() + 1;
-			pst = con.prepareStatement("insert into room values(?,?,?,?)");
+			pst = con.prepareStatement("insert into room values(?,?,?,?,?)");
 			pst.setInt(1, id);
 			pst.setString(2, room.getCode());
 			pst.setDouble(3, room.getPrice());
 			pst.setString(4, room.getRoomType().name());
+			pst.setInt(5, room.getHotelId().intValue());
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {

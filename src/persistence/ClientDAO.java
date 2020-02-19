@@ -34,13 +34,14 @@ public class ClientDAO {
 	public String addClient(Client client) throws SQLException {
 		try {
 			int id = getMaxId() + 1;
-			pst = con.prepareStatement("insert into client values(?,?,?,?,?,?)");
+			pst = con.prepareStatement("insert into client values(?,?,?,?,?,?,?)");
 			pst.setInt(1, id);
 			pst.setString(2, client.getName());
 			pst.setString(3, client.getDni());
 			pst.setString(4, client.getTelephone());
 			pst.setString(5, client.getEmail());
 			pst.setBoolean(6, client.isActive());
+			pst.setInt(7, client.getHotelId().intValue());
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {

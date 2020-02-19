@@ -35,13 +35,14 @@ public class BookingDAO {
 	public String addBooking(Booking booking) throws SQLException {
 		try {
 			int id = getMaxId() + 1;
-			pst = con.prepareStatement("insert into booking values(?,?,?,?,?,?)");
+			pst = con.prepareStatement("insert into booking values(?,?,?,?,?,?,?)");
 			pst.setInt(1, id);
 			pst.setString(2, booking.getCode());
 			pst.setString(3, booking.getStartDate());
 			pst.setString(4, booking.getEndDate());
 			pst.setDouble(5, booking.getPrice());
 			pst.setBoolean(6, booking.isCancelled());
+			pst.setInt(7, booking.getClientId().intValue());
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {

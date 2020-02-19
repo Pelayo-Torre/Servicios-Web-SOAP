@@ -40,7 +40,7 @@ public class ClientValidator {
 			throw new ClientException("El DNI es obligatorio", "415");
 
 		if (!isNifValid(person.getDni()))
-			throw new ClientException("El DNI especificado no existe", "415");
+			throw new ClientException("El DNI especificado no es correcto", "415");
 
 	}
 
