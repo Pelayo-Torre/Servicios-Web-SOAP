@@ -83,10 +83,8 @@ public class HotelDAO {
 	public String deleteHotel(Long id) throws SQLException {
 
 		try {
-			// TODO modificar
-			pst = con.prepareStatement("update hotel set active=? where id=?");
-			pst.setBoolean(1, false);
-			pst.setLong(2, id);
+			pst = con.prepareStatement("delete from hotel where id=?");
+			pst.setLong(1, id);
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {
