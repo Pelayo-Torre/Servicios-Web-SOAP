@@ -3,6 +3,7 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 public class Client {

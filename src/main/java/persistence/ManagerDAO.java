@@ -20,7 +20,7 @@ public class ManagerDAO {
 	public static ManagerDAO getInstance() {
 		if (managerDAO == null) {
 			managerDAO = new ManagerDAO();
-			managerDAO.connection = Database.getConnection();
+		//	managerDAO.connection = Dba.getConnection();
 		}
 		return managerDAO;
 	}
