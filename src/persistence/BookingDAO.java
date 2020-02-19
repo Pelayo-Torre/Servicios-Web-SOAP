@@ -149,6 +149,30 @@ public class BookingDAO {
 	}
 
 	/**
+	 * Método para comprobar si existe la reserva cuyo codigo se pasa por parametro
+	 * 
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public boolean existsBooking(String code) throws SQLException {
+
+		try {
+			pst = con.prepareStatement("select * from booking where code=?");
+			pst.setString(1, code);
+			rs = pst.executeQuery();
+			if (rs.next())
+				return true;
+			return false;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			rs.close();
+			pst.close();
+		}
+	}
+
+	/**
 	 * Método para obtener las reservas de un cliente
 	 * 
 	 * @return

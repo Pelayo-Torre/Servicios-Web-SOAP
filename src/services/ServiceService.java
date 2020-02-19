@@ -24,6 +24,8 @@ public class ServiceService {
 	 */
 	public String addService(Service service) throws SQLException, ServiceException {
 		serviceValidator.validate(service);
+		if (dao.existsService(service.getCode()))
+			throw new ServiceException("El servicio que se añadir ya existe en el sistema", "404");
 		return dao.addService(service);
 	}
 

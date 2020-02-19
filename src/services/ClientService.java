@@ -24,6 +24,8 @@ public class ClientService {
 	 */
 	public String addClient(Client client) throws SQLException, ClientException {
 		clientValidator.validate(client);
+		if (dao.existsClient(client.getDni()))
+			throw new ClientException("El cliente que se añadir ya existe en el sistema", "404");
 		client.setActive(true);
 		return dao.addClient(client);
 	}

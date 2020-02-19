@@ -26,6 +26,8 @@ public class BookingService {
 	 */
 	public String addBooking(Booking booking) throws SQLException, BookingException, ParseException {
 		bookingValidator.validate(booking);
+		if (dao.existsBooking(booking.getCode()))
+			throw new BookingException("La reserva que se añadir ya existe en el sistema", "404");
 		booking.setCancelled(false);
 		return dao.addBooking(booking);
 	}

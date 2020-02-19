@@ -143,6 +143,30 @@ public class ServiceDAO {
 	}
 
 	/**
+	 * Método para comprobar si existe el servicio cuyo codigo se pasa por parametro
+	 * 
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public boolean existsService(String code) throws SQLException {
+
+		try {
+			pst = con.prepareStatement("select * from service where code=?");
+			pst.setString(1, code);
+			rs = pst.executeQuery();
+			if (rs.next())
+				return true;
+			return false;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			rs.close();
+			pst.close();
+		}
+	}
+
+	/**
 	 * Método para obtener los servicios del hotel que se pasa por parametro
 	 * 
 	 * @return

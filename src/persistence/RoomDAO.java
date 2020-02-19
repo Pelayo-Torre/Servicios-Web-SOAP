@@ -144,6 +144,30 @@ public class RoomDAO {
 	}
 
 	/**
+	 * Método para comprobar si existe la habitación cuyo codigo se pasa por parametro
+	 * 
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public boolean existsRoom(String code) throws SQLException {
+
+		try {
+			pst = con.prepareStatement("select * from room where code=?");
+			pst.setString(1, code);
+			rs = pst.executeQuery();
+			if (rs.next())
+				return true;
+			return false;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			rs.close();
+			pst.close();
+		}
+	}
+
+	/**
 	 * Método para obtener las habitaciones del hotel que se pasa por parametro
 	 * 
 	 * @return

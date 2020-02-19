@@ -24,6 +24,8 @@ public class RoomService {
 	 */
 	public String addRoom(Room room) throws SQLException, RoomException {
 		roomValidator.validate(room);
+		if (dao.existsRoom(room.getCode()))
+			throw new RoomException("La habitación que se añadir ya existe en el sistema", "404");
 		return dao.addRoom(room);
 	}
 

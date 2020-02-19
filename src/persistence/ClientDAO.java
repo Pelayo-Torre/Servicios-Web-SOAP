@@ -147,6 +147,30 @@ public class ClientDAO {
 	}
 
 	/**
+	 * Método para comprobar si existe el cliente cuyo dni se pasa por parametro
+	 * 
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public boolean existsClient(String dni) throws SQLException {
+
+		try {
+			pst = con.prepareStatement("select * from client where dni=?");
+			pst.setString(1, dni);
+			rs = pst.executeQuery();
+			if (rs.next())
+				return true;
+			return false;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			rs.close();
+			pst.close();
+		}
+	}
+
+	/**
 	 * Método para obtener los clientes del hotel que se pasa por parametro
 	 * 
 	 * @return
