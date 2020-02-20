@@ -69,7 +69,6 @@ public class HotelDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			em.getTransaction().begin();
 			em.merge(hotel);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;
@@ -112,7 +111,7 @@ public class HotelDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("select h from hotel h", Hotel.class).getResultList();
+			resultList = em.createQuery("select name from HOTEL ", Hotel.class).getResultList();
 		} finally {
 			dba.closeEm();
 		}

@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Hotel implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue
 	private Long id;
 	private String name;
 	@Transient
