@@ -3,17 +3,30 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
+@Entity
+@Table (name = "room")
 public class Room {
 
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String code;
 	private Double price;
 	private RoomType roomType;
 
-	private Long hotelId;
-	private Set<Booking> bookings = new HashSet<Booking>();
+	@ManyToOne
+	@JoinColumn(name="hotelId", nullable=false)
+	private Hotel hotel;
+	
+	//private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
 	public Long getId() {
@@ -48,22 +61,23 @@ public class Room {
 		this.roomType = roomType;
 	}
 
-	public Long getHotelId() {
-		return hotelId;
-	}
-
-	public void setHotelId(Long hotelId) {
-		this.hotelId = hotelId;
-	}
-
 	@XmlTransient
-	public Set<Booking> getBookings() {
-		return bookings;
+	public Hotel getHotel() {
+		return hotel;
 	}
 
-	public void setBookings(Set<Booking> bookings) {
-		this.bookings = bookings;
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
+
+//	@XmlTransient
+//	public Set<Booking> getBookings() {
+//		return bookings;
+//	}
+//
+//	public void setBookings(Set<Booking> bookings) {
+//		this.bookings = bookings;
+//	}
 
 	/**
 	 * Constructor
@@ -71,22 +85,15 @@ public class Room {
 	public Room() {
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param code
-	 * @param price
-	 * @param roomType
-	 * @param hotelId
-	 * @param bookings
-	 */
-	public Room(String code, double price, RoomType roomType, Long hotelId, Set<Booking> bookings) {
+	public Room(String code, Double price, RoomType roomType, Hotel hotel, Set<Booking> bookings) {
 		super();
 		this.code = code;
 		this.price = price;
 		this.roomType = roomType;
-		this.hotelId = hotelId;
-		this.bookings = bookings;
+		this.hotel = hotel;
+		//this.bookings = bookings;
 	}
+
+	
 
 }

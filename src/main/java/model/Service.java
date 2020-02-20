@@ -3,17 +3,30 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
+@Entity
+@Table (name = "service")
 public class Service {
 
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
 	private String code;
 	private Double price;
 
-	private Long hotelId;
-	private Set<Booking> bookings = new HashSet<Booking>();
+	@ManyToOne
+	@JoinColumn(name="hotelId", nullable=false)
+	private Hotel hotel;
+	
+	//private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
 	public Long getId() {
@@ -48,22 +61,22 @@ public class Service {
 		this.price = price;
 	}
 
-	public Long getHotelId() {
-		return hotelId;
+	public Hotel getHotel() {
+		return hotel;
 	}
 
-	public void setHotelId(Long hotelId) {
-		this.hotelId = hotelId;
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 
-	@XmlTransient
-	public Set<Booking> getBookings() {
-		return bookings;
-	}
-
-	public void setBookings(Set<Booking> bookings) {
-		this.bookings = bookings;
-	}
+//	@XmlTransient
+//	public Set<Booking> getBookings() {
+//		return bookings;
+//	}
+//
+//	public void setBookings(Set<Booking> bookings) {
+//		this.bookings = bookings;
+//	}
 
 	/**
 	 * Constructor
@@ -71,22 +84,15 @@ public class Service {
 	public Service() {
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param name
-	 * @param code
-	 * @param price
-	 * @param hotelId
-	 * @param bookings
-	 */
-	public Service(String name, String code, double price, Long hotelId, Set<Booking> bookings) {
+	public Service(String name, String code, Double price, Hotel hotel, Set<Booking> bookings) {
 		super();
 		this.name = name;
 		this.code = code;
 		this.price = price;
-		this.hotelId = hotelId;
-		this.bookings = bookings;
+		this.hotel = hotel;
+//		this.bookings = bookings;
 	}
+
+	
 
 }

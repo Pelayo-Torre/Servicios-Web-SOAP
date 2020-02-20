@@ -38,7 +38,7 @@ public class ClientDAO {
 			pst.setString(4, client.getTelephone());
 			pst.setString(5, client.getEmail());
 			pst.setBoolean(6, client.isActive());
-			pst.setInt(7, client.getHotelId().intValue());
+			
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {

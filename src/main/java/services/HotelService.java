@@ -19,12 +19,10 @@ public class HotelService {
 	 * 
 	 * @param hotel
 	 * @return
-	 * @throws SQLException
 	 * @throws HotelException
 	 */
-	public String addHotel(Hotel hotel) throws SQLException, HotelException {
+	public String addHotel(Hotel hotel) throws HotelException {
 		hotelValidator.validate(hotel);
-		hotel.setDeleted(false);
 		return dao.addHotel(hotel);
 	}
 
@@ -33,13 +31,9 @@ public class HotelService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws SQLException
 	 * @throws HotelException
 	 */
-	public String deleteHotel(Long id) throws SQLException, HotelException {
-		Hotel h = dao.listHotel(id);
-		if (h == null)
-			throw new HotelException("El hotel que se desea eliminar no existe", "404");
+	public String deleteHotel(Long id) throws HotelException {
 		return dao.deleteHotel(id);
 	}
 
@@ -55,7 +49,7 @@ public class HotelService {
 		hotelValidator.validate(hotel);
 		Hotel c = dao.listHotel(id);
 		if (c == null)
-			throw new HotelException("El hotel que se desea eliminar no existe", "404");
+			throw new HotelException("El hotel que se desea actualizar no existe", "404");
 		hotel.setId(id);
 		return dao.updateHotel(hotel);
 	}
@@ -65,9 +59,9 @@ public class HotelService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws SQLException
+	 * @throws HotelException
 	 */
-	public Hotel listHotel(Long id) throws SQLException {
+	public Hotel listHotel(Long id) throws HotelException {
 		return dao.listHotel(id);
 	}
 

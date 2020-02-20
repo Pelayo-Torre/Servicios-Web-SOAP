@@ -36,7 +36,7 @@ public class ServiceDAO {
 			pst.setString(2, service.getName());
 			pst.setString(3, service.getCode());
 			pst.setDouble(4, service.getPrice());
-			pst.setInt(5, service.getHotelId().intValue());
+		
 			int row = pst.executeUpdate();
 			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
 		} catch (SQLException e) {

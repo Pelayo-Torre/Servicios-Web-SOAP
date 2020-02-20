@@ -20,11 +20,11 @@ public class Client {
 	private boolean active;
 
 	@ManyToOne
-	@JoinColumn(name="hotel_id", nullable=false)
+	@JoinColumn(name="hotelId", nullable=false)
 	private Hotel hotel;
 	
 	
-	private Set<Booking> bookings = new HashSet<Booking>();
+	//private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
 	public Long getId() {
@@ -76,14 +76,14 @@ public class Client {
 		this.active = active;
 	}
 	
-	@XmlTransient
-	public Set<Booking> getBookings() {
-		return bookings;
-	}
-
-	public void setBookings(Set<Booking> bookings) {
-		this.bookings = bookings;
-	}
+//	@XmlTransient
+//	public Set<Booking> getBookings() {
+//		return bookings;
+//	}
+//
+//	public void setBookings(Set<Booking> bookings) {
+//		this.bookings = bookings;
+//	}
 
 	/**
 	 * Constructor
