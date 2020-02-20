@@ -18,11 +18,8 @@ public class ClientDAO {
 
 	/**
 	 * Constructor
-	 * 
-	 * @param con
 	 */
-	public ClientDAO(Connection con) {
-		this.con = con;
+	public ClientDAO() {
 	}
 
 	/**

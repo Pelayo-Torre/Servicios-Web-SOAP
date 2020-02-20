@@ -1,11 +1,8 @@
 package persistence;
 
-import java.sql.Connection;
-
 public class ManagerDAO {
 
 	private static ManagerDAO managerDAO = null;
-	protected Connection connection = null;
 	protected HotelDAO hotelDAO = null;
 	protected ClientDAO clientDAO = null;
 	protected BookingDAO bookingDAO = null;
@@ -20,7 +17,6 @@ public class ManagerDAO {
 	public static ManagerDAO getInstance() {
 		if (managerDAO == null) {
 			managerDAO = new ManagerDAO();
-		//	managerDAO.connection = Dba.getConnection();
 		}
 		return managerDAO;
 	}
@@ -32,11 +28,11 @@ public class ManagerDAO {
 	 */
 	public HotelDAO getHotelDAO() {
 		if (managerDAO.hotelDAO == null) {
-			managerDAO.hotelDAO = new HotelDAO(managerDAO.connection);
+			managerDAO.hotelDAO = new HotelDAO();
 		}
 		return managerDAO.hotelDAO;
 	}
-	
+
 	/**
 	 * Método para obtener una instancia de ClientDAO
 	 * 
@@ -44,7 +40,7 @@ public class ManagerDAO {
 	 */
 	public ClientDAO getClientDAO() {
 		if (managerDAO.clientDAO == null) {
-			managerDAO.clientDAO = new ClientDAO(managerDAO.connection);
+			managerDAO.clientDAO = new ClientDAO();
 		}
 		return managerDAO.clientDAO;
 	}
@@ -56,7 +52,7 @@ public class ManagerDAO {
 	 */
 	public BookingDAO getBookingDAO() {
 		if (managerDAO.bookingDAO == null) {
-			managerDAO.bookingDAO = new BookingDAO(managerDAO.connection);
+			managerDAO.bookingDAO = new BookingDAO();
 		}
 		return managerDAO.bookingDAO;
 	}
@@ -68,7 +64,7 @@ public class ManagerDAO {
 	 */
 	public RoomDAO getRoomDAO() {
 		if (managerDAO.roomDAO == null) {
-			managerDAO.roomDAO = new RoomDAO(managerDAO.connection);
+			managerDAO.roomDAO = new RoomDAO();
 		}
 		return managerDAO.roomDAO;
 	}
@@ -80,7 +76,7 @@ public class ManagerDAO {
 	 */
 	public ServiceDAO getServiceDAO() {
 		if (managerDAO.serviceDAO == null) {
-			managerDAO.serviceDAO = new ServiceDAO(managerDAO.connection);
+			managerDAO.serviceDAO = new ServiceDAO();
 		}
 		return managerDAO.serviceDAO;
 	}

@@ -19,11 +19,8 @@ public class BookingDAO {
 
 	/**
 	 * Constructor
-	 * 
-	 * @param con
 	 */
-	public BookingDAO(Connection con) {
-		this.con = con;
+	public BookingDAO() {
 	}
 
 	/**

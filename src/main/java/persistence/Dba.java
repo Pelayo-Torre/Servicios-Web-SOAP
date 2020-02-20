@@ -27,12 +27,9 @@ public class Dba {
 			return;
 		}
 
-		try
-		{
-		outer = emf.createEntityManager();
-		}
-		catch ( Exception e)
-		{
+		try {
+			outer = emf.createEntityManager();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -109,9 +106,10 @@ public class Dba {
 			initialized = true;
 
 			try {
-				emf = Persistence.createEntityManagerFactory("JPA_PU");
+				emf = Persistence.createEntityManagerFactory("manager");
 
 			} catch (Throwable t) {
+				t.printStackTrace();
 				return;
 			}
 		}

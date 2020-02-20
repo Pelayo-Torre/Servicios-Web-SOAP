@@ -1,6 +1,5 @@
 package web.services;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -10,7 +9,6 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import exception.HotelException;
 import model.Hotel;
-import model.Prueba;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
@@ -30,7 +28,4 @@ public interface IHotelWS {
 
 	@WebMethod
 	public List<Hotel> listHotels() throws Exception;
-
-	@WebMethod
-	public String savePrueba(Prueba p) throws SQLException;
 }

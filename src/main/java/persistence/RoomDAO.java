@@ -19,11 +19,8 @@ public class RoomDAO {
 
 	/**
 	 * Constructor
-	 * 
-	 * @param con
 	 */
-	public RoomDAO(Connection con) {
-		this.con = con;
+	public RoomDAO() {
 	}
 
 	/**

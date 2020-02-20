@@ -18,13 +18,10 @@ public class ServiceDAO {
 
 	/**
 	 * Constructor
-	 * 
-	 * @param con
 	 */
-	public ServiceDAO(Connection con) {
-		this.con = con;
+	public ServiceDAO() {
 	}
-
+	
 	/**
 	 * Método para almacenar el servicio que se pasa por parámetro
 	 * 

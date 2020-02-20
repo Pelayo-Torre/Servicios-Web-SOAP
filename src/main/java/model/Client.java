@@ -3,11 +3,15 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
+@Entity
+@Table (name = "client")
 public class Client {
 
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
 	private String dni;
@@ -15,7 +19,11 @@ public class Client {
 	private String email;
 	private boolean active;
 
-	private Long hotelId;
+	@ManyToOne
+	@JoinColumn(name="hotel_id", nullable=false)
+	private Hotel hotel;
+	
+	
 	private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
@@ -67,15 +75,7 @@ public class Client {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-
-	public Long getHotelId() {
-		return hotelId;
-	}
-
-	public void setHotelId(Long hotelId) {
-		this.hotelId = hotelId;
-	}
-
+	
 	@XmlTransient
 	public Set<Booking> getBookings() {
 		return bookings;
@@ -89,29 +89,6 @@ public class Client {
 	 * Constructor
 	 */
 	public Client() {
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param name
-	 * @param dni
-	 * @param telephone
-	 * @param email
-	 * @param active
-	 * @param hotelId
-	 * @param bookings
-	 */
-	public Client(String name, String dni, String telephone, String email, boolean active, Long hotelId,
-			Set<Booking> bookings) {
-		super();
-		this.name = name;
-		this.dni = dni;
-		this.telephone = telephone;
-		this.email = email;
-		this.active = active;
-		this.hotelId = hotelId;
-		this.bookings = bookings;
 	}
 
 }
