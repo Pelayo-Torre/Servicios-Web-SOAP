@@ -1,21 +1,44 @@
 package model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
-public class Booking {
+@Entity
+@Table(name = "booking")
+public class Booking implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String code;
 	private String startDate;
 	private String endDate;
 	private double price;
-	private boolean cancelled;
 
-	private Long clientId;
+	@ManyToOne
+	@JoinColumn(name = "clientId", nullable = false)
+	private Client client;
+
+	@ManyToMany
+	@JoinTable(name = "bookingservice", joinColumns = @JoinColumn(name = "bookingId"), inverseJoinColumns = @JoinColumn(name = "serviceId"))
 	private Set<Service> services = new HashSet<Service>();
+
+	@ManyToMany
+	@JoinTable(name = "bookingroom", joinColumns = @JoinColumn(name = "bookingId"), inverseJoinColumns = @JoinColumn(name = "roomId"))
 	private Set<Room> rooms = new HashSet<Room>();
 
 	@XmlTransient
@@ -59,12 +82,13 @@ public class Booking {
 		this.price = price;
 	}
 
-	public Long getClientId() {
-		return clientId;
+	@XmlTransient
+	public Client getClient() {
+		return client;
 	}
 
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	@XmlTransient
@@ -85,15 +109,6 @@ public class Booking {
 		this.rooms = rooms;
 	}
 
-	@XmlTransient
-	public boolean isCancelled() {
-		return cancelled;
-	}
-
-	public void setCancelled(boolean cancelled) {
-		this.cancelled = cancelled;
-	}
-
 	/**
 	 * Constructor
 	 */
@@ -107,21 +122,20 @@ public class Booking {
 	 * @param startDate
 	 * @param endDate
 	 * @param price
-	 * @param cancelled
-	 * @param clientId
+	 * @param client
 	 * @param services
 	 * @param rooms
 	 */
-	public Booking(String code, String startDate, String endDate, double price, boolean cancelled, Long clientId,
-			Set<Service> services, Set<Room> rooms) {
+	public Booking(String code, String startDate, String endDate, double price, Client client, Set<Service> services,
+			Set<Room> rooms) {
 		super();
 		this.code = code;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.price = price;
-		this.cancelled = cancelled;
-		this.clientId = clientId;
+		this.client = client;
 		this.services = services;
 		this.rooms = rooms;
 	}
+
 }

@@ -1,21 +1,14 @@
 package persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
+import exception.RoomException;
 import model.Room;
-import model.RoomType;
 import utils.Constants;
 
 public class RoomDAO {
-
-	private Connection con;
-	private PreparedStatement pst = null;
-	private ResultSet rs = null;
 
 	/**
 	 * Constructor
@@ -27,43 +20,16 @@ public class RoomDAO {
 	 * Método para almacenar la habitación que se pasa por parámetro
 	 * 
 	 * @param room
-	 * @throws SQLException
 	 */
-	public String addRoom(Room room) throws SQLException {
+	public String addRoom(Room room) {
+		Dba dba = new Dba();
 		try {
-			int id = getMaxId() + 1;
-			pst = con.prepareStatement("insert into room values(?,?,?,?,?)");
-			pst.setInt(1, id);
-			pst.setString(2, room.getCode());
-			pst.setDouble(3, room.getPrice());
-			pst.setString(4, room.getRoomType().name());
-		
-			int row = pst.executeUpdate();
-			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			EntityManager em = dba.getActiveEm();
+			em.persist(room);
+			em.getTransaction().commit();
+			return Constants.RESPONSE_OK;
 		} finally {
-			pst.close();
-		}
-	}
-
-	/**
-	 * Método para obtener el maximo id
-	 * 
-	 * @return
-	 * @throws SQLException
-	 */
-	private int getMaxId() throws SQLException {
-		try {
-			pst = con.prepareStatement("select max(id) from room");
-			rs = pst.executeQuery();
-			rs.next();
-			return rs.getInt(1);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			rs.close();
-			pst.close();
+			dba.closeEm();
 		}
 	}
 
@@ -71,21 +37,24 @@ public class RoomDAO {
 	 * Método para borrar la habitación cuyo id se pasa por parametro
 	 * 
 	 * @return
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws RoomException
 	 */
-	public String deleteRoom(Long id) throws SQLException {
+	public String deleteRoom(Long id) throws RoomException {
 
+		Dba dba = new Dba();
 		try {
-			pst = con.prepareStatement("delete from room where id=?");
-			pst.setBoolean(1, false);
-			pst.setLong(1, id);
-			int row = pst.executeUpdate();
-			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			EntityManager em = dba.getActiveEm();
+
+			Room room = em.find(Room.class, id);
+			if (room == null)
+				throw new RoomException("La habitación con id =  " + id + " no existe.", "404");
+
+			em.getTransaction().begin();
+			em.remove(room);
+			em.getTransaction().commit();
+			return Constants.RESPONSE_OK;
 		} finally {
-			pst.close();
+			dba.closeEm();
 		}
 	}
 
@@ -93,21 +62,16 @@ public class RoomDAO {
 	 * Método para actualizar la habitacion que se pasa por parámetro
 	 * 
 	 * @param room
-	 * @throws SQLException
 	 */
-	public String updateRoom(Room room) throws SQLException {
+	public String updateRoom(Room room) {
+		Dba dba = new Dba();
 		try {
-			pst = con.prepareStatement("update room set code=?, price=?, type=? where id=?");
-			pst.setString(1, room.getCode());
-			pst.setDouble(2, room.getPrice());
-			pst.setString(3, room.getRoomType().name());
-			pst.setInt(4, room.getId().intValue());
-			int row = pst.executeUpdate();
-			return row > 0 ? Constants.RESPONSE_OK : Constants.RESPONSE_KO;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			EntityManager em = dba.getActiveEm();
+			em.merge(room);
+			em.getTransaction().commit();
+			return Constants.RESPONSE_OK;
 		} finally {
-			pst.close();
+			dba.closeEm();
 		}
 	}
 
@@ -115,84 +79,85 @@ public class RoomDAO {
 	 * Método para obtener la habitación cuyo id se pasa por parametro
 	 * 
 	 * @return
-	 * @throws SQLException
-	 * @throws Exception
+	 * @throws RoomException
 	 */
-	public Room listRoom(Long id) throws SQLException {
+	public Room listRoom(Long id) throws RoomException {
 
+		Room room = null;
+		Dba dba = new Dba();
 		try {
-			pst = con.prepareStatement("select code, price, type from room where id=?");
-			pst.setLong(1, id);
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				Room r = new Room();
-				r.setCode(rs.getString(1));
-				r.setPrice(rs.getDouble(2));
-				r.setRoomType(RoomType.valueOf(rs.getString(3)));
-				return r;
-			}
-			return null;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			EntityManager em = dba.getActiveEm();
+
+			room = em.find(Room.class, id);
+			if (room == null)
+				throw new RoomException("La habitación con id =  " + id + " no existe.", "404");
+
 		} finally {
-			rs.close();
-			pst.close();
+			dba.closeEm();
 		}
+		return room;
 	}
 
 	/**
-	 * Método para comprobar si existe la habitación cuyo codigo se pasa por parametro
+	 * Método para comprobar si existe la habitación cuyo codigo se pasa por
+	 * parametro
 	 * 
 	 * @return
-	 * @throws SQLException
-	 * @throws Exception
 	 */
-	public boolean existsRoom(String code) throws SQLException {
+	public Room findRoomByCode(String code) {
 
+		Room resultList = null;
+
+		Dba dba = new Dba();
 		try {
-			pst = con.prepareStatement("select * from room where code=?");
-			pst.setString(1, code);
-			rs = pst.executeQuery();
-			if (rs.next())
-				return true;
-			return false;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			EntityManager em = dba.getActiveEm();
+			resultList = em.createQuery("Select r From room r Where r.code = :code", Room.class)
+					.setParameter("code", code).getSingleResult();
 		} finally {
-			rs.close();
-			pst.close();
+			dba.closeEm();
 		}
+		return resultList;
 	}
 
 	/**
 	 * Método para obtener las habitaciones del hotel que se pasa por parametro
 	 * 
 	 * @return
-	 * @throws SQLException
-	 * @throws Exception
 	 */
-	public List<Room> listRoomsOfHotel(Long hotelId) throws SQLException {
+	public List<Room> listRoomsOfHotel(Long hotelId) {
 
-		List<Room> rooms = new ArrayList<Room>();
+		List<Room> resultList = null;
 
+		Dba dba = new Dba();
 		try {
-			pst = con.prepareStatement("code, price, type from room where hotelId=?");
-			pst.setLong(1, hotelId);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				Room r = new Room();
-				r.setCode(rs.getString(1));
-				r.setPrice(rs.getDouble(2));
-				r.setRoomType(RoomType.valueOf(rs.getString(3)));
-				rooms.add(r);
-			}
-			return rooms;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			EntityManager em = dba.getActiveEm();
+			resultList = em.createQuery("select r from room r where r.hotelId = :hotelId", Room.class)
+					.setParameter("hotelId", hotelId).getResultList();
 		} finally {
-			rs.close();
-			pst.close();
+			dba.closeEm();
 		}
+		return resultList;
+	}
+
+	/**
+	 * Método para obtener las habitaciones de la reserva que se pasa por parametro
+	 * 
+	 * @return
+	 */
+	public List<Room> listRoomsOfBooking(Long bookingId) {
+
+		List<Room> resultList = null;
+
+		Dba dba = new Dba();
+		try {
+			EntityManager em = dba.getActiveEm();
+			// TODO review, change, intermediate table is necessary
+			resultList = em.createQuery("select r from room r where r.hotelId = :hotelId", Room.class)
+					.setParameter("hotelId", bookingId).getResultList();
+		} finally {
+			dba.closeEm();
+		}
+		return resultList;
 	}
 
 }

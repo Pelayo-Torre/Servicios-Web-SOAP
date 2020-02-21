@@ -37,7 +37,7 @@ public class BookingWS implements IBookingWS {
 
 	@Override
 	public List<Booking> listBookings(Long clientId) throws SQLException, ParseException {
-		return bookingService.listBookings(clientId);
+		return bookingService.listBookingsOfClient(clientId);
 	}
 
 }

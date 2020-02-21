@@ -1,6 +1,5 @@
 package persistence;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,7 +20,6 @@ public class HotelDAO {
 	 * Método para almacenar el hotel que se pasa por parámetro
 	 * 
 	 * @param hotel
-	 * @throws SQLException
 	 */
 	public String addHotel(Hotel hotel) {
 		Dba dba = new Dba();
@@ -63,7 +61,6 @@ public class HotelDAO {
 	 * Método para actualizar el hotel que se pasa por parámetro
 	 * 
 	 * @param hotel
-	 * @throws SQLException
 	 */
 	public String updateHotel(Hotel hotel) {
 		Dba dba = new Dba();
@@ -111,7 +108,7 @@ public class HotelDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("select name from HOTEL ", Hotel.class).getResultList();
+			resultList = em.createQuery("select h from hotel h ", Hotel.class).getResultList();
 		} finally {
 			dba.closeEm();
 		}

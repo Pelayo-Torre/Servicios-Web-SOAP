@@ -3,30 +3,29 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table (name = "room")
+@Table(name = "room")
 public class Room {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String code;
 	private Double price;
+	private String type;
+
+	@Transient
 	private RoomType roomType;
 
 	@ManyToOne
-	@JoinColumn(name="hotelId", nullable=false)
+	@JoinColumn(name = "hotelId", nullable = false)
 	private Hotel hotel;
-	
-	//private Set<Booking> bookings = new HashSet<Booking>();
+
+	@ManyToMany(mappedBy = "rooms")
+	private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
 	public Long getId() {
@@ -53,6 +52,15 @@ public class Room {
 		this.price = price;
 	}
 
+	@XmlTransient
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public RoomType getRoomType() {
 		return roomType;
 	}
@@ -70,14 +78,14 @@ public class Room {
 		this.hotel = hotel;
 	}
 
-//	@XmlTransient
-//	public Set<Booking> getBookings() {
-//		return bookings;
-//	}
-//
-//	public void setBookings(Set<Booking> bookings) {
-//		this.bookings = bookings;
-//	}
+	@XmlTransient
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
+	}
 
 	/**
 	 * Constructor
@@ -85,15 +93,24 @@ public class Room {
 	public Room() {
 	}
 
-	public Room(String code, Double price, RoomType roomType, Hotel hotel, Set<Booking> bookings) {
+	/**
+	 * Constructor
+	 * 
+	 * @param code
+	 * @param price
+	 * @param type
+	 * @param roomType
+	 * @param hotel
+	 * @param bookings
+	 */
+	public Room(String code, Double price, String type, RoomType roomType, Hotel hotel, Set<Booking> bookings) {
 		super();
 		this.code = code;
 		this.price = price;
+		this.type = type;
 		this.roomType = roomType;
 		this.hotel = hotel;
-		//this.bookings = bookings;
+		this.bookings = bookings;
 	}
-
-	
 
 }

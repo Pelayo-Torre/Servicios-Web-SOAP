@@ -1,6 +1,5 @@
 package services;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -20,15 +19,16 @@ public class BookingService {
 	 * 
 	 * @param booking
 	 * @return
-	 * @throws SQLException
 	 * @throws BookingException
 	 * @throws ParseException
 	 */
-	public String addBooking(Booking booking) throws SQLException, BookingException, ParseException {
+	public String addBooking(Booking booking) throws BookingException, ParseException {
 		bookingValidator.validate(booking);
-		if (dao.existsBooking(booking.getCode()))
-			throw new BookingException("La reserva que se añadir ya existe en el sistema", "404");
-		booking.setCancelled(false);
+		Booking b = dao.findBookingByCode(booking.getCode());
+		if (b == null)
+			// TODO revisar codigo de error
+			throw new BookingException("La reserva con código =  " + booking.getCode() + " ya existe en el sistema",
+					"404");
 		return dao.addBooking(booking);
 	}
 
@@ -37,15 +37,10 @@ public class BookingService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws SQLException
 	 * @throws BookingException
 	 * @throws ParseException
 	 */
-	public String deleteBooking(Long id) throws SQLException, BookingException, ParseException {
-		Booking b = dao.listBooking(id);
-		if (b == null)
-			throw new BookingException("La reserva que se desea eliminar no existe", "404");
-
+	public String deleteBooking(Long id) throws BookingException, ParseException {
 		return dao.deleteBooking(id);
 	}
 
@@ -54,15 +49,11 @@ public class BookingService {
 	 * 
 	 * @param booking
 	 * @return
-	 * @throws SQLException
 	 * @throws BookingException
 	 * @throws ParseException
 	 */
-	public String updateBooking(Long id, Booking booking) throws SQLException, BookingException, ParseException {
+	public String updateBooking(Long id, Booking booking) throws BookingException, ParseException {
 		bookingValidator.validate(booking);
-		Booking b = dao.listBooking(id);
-		if (b == null)
-			throw new BookingException("La reserva que se desea eliminar no existe", "404");
 		booking.setId(id);
 		return dao.updateBooking(booking);
 	}
@@ -72,10 +63,10 @@ public class BookingService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws SQLException
 	 * @throws ParseException
+	 * @throws BookingException
 	 */
-	public Booking listBooking(Long id) throws SQLException, ParseException {
+	public Booking listBooking(Long id) throws ParseException, BookingException {
 		return dao.listBooking(id);
 	}
 
@@ -84,11 +75,10 @@ public class BookingService {
 	 * parametro
 	 * 
 	 * @return
-	 * @throws SQLException
 	 * @throws ParseException
 	 */
-	public List<Booking> listBookings(Long clientId) throws SQLException, ParseException {
-		return dao.listBookings(clientId);
+	public List<Booking> listBookingsOfClient(Long clientId) throws ParseException {
+		return dao.listBookingsOfClient(clientId);
 	}
 
 }

@@ -1,6 +1,5 @@
 package services;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import exception.HotelException;
@@ -23,6 +22,8 @@ public class HotelService {
 	 */
 	public String addHotel(Hotel hotel) throws HotelException {
 		hotelValidator.validate(hotel);
+		hotel.setLatitude(hotel.getLocation().getLatitude());
+		hotel.setLongitude(hotel.getLocation().getLongitude());
 		return dao.addHotel(hotel);
 	}
 
@@ -42,15 +43,13 @@ public class HotelService {
 	 * 
 	 * @param hotel
 	 * @return
-	 * @throws SQLException
 	 * @throws HotelException
 	 */
-	public String updateHotel(Long id, Hotel hotel) throws SQLException, HotelException {
+	public String updateHotel(Long id, Hotel hotel) throws HotelException {
 		hotelValidator.validate(hotel);
-		Hotel c = dao.listHotel(id);
-		if (c == null)
-			throw new HotelException("El hotel que se desea actualizar no existe", "404");
 		hotel.setId(id);
+		hotel.setLatitude(hotel.getLocation().getLatitude());
+		hotel.setLongitude(hotel.getLocation().getLongitude());
 		return dao.updateHotel(hotel);
 	}
 
@@ -69,9 +68,8 @@ public class HotelService {
 	 * Método para obtener la lista de hoteles
 	 * 
 	 * @return
-	 * @throws SQLException
 	 */
-	public List<Hotel> listHotels() throws SQLException {
+	public List<Hotel> listHotels() {
 		return dao.listHotels();
 	}
 

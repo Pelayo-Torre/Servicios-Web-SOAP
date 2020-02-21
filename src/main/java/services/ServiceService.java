@@ -1,6 +1,5 @@
 package services;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import exception.ServiceException;
@@ -19,13 +18,15 @@ public class ServiceService {
 	 * 
 	 * @param service
 	 * @return
-	 * @throws SQLException
 	 * @throws ServiceException
 	 */
-	public String addService(Service service) throws SQLException, ServiceException {
+	public String addService(Service service) throws ServiceException {
 		serviceValidator.validate(service);
-		if (dao.existsService(service.getCode()))
-			throw new ServiceException("El servicio que se añadir ya existe en el sistema", "404");
+		Service s = dao.findServiceByCode(service.getCode());
+		if (s == null)
+			// TODO revisar codigo de error
+			throw new ServiceException("El servicio con código =  " + service.getCode() + " ya existe en el sistema",
+					"404");
 		return dao.addService(service);
 	}
 
@@ -34,14 +35,9 @@ public class ServiceService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws SQLException
 	 * @throws ServiceException
 	 */
-	public String deleteService(Long id) throws SQLException, ServiceException {
-		Service s = dao.listService(id);
-		if (s == null)
-			throw new ServiceException("El servicio que se desea eliminar no existe", "404");
-
+	public String deleteService(Long id) throws ServiceException {
 		return dao.deleteService(id);
 	}
 
@@ -50,13 +46,10 @@ public class ServiceService {
 	 * 
 	 * @param service
 	 * @return
-	 * @throws SQLException
+	 * @throws ServiceException
 	 */
-	public String updateService(Long id, Service service) throws SQLException, ServiceException {
+	public String updateService(Long id, Service service) throws ServiceException {
 		serviceValidator.validate(service);
-		Service s = dao.listService(id);
-		if (s == null)
-			throw new ServiceException("El servicio que se desea eliminar no existe", "404");
 		service.setId(id);
 		return dao.updateService(service);
 	}
@@ -66,9 +59,9 @@ public class ServiceService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws SQLException
+	 * @throws ServiceException
 	 */
-	public Service listService(Long id) throws SQLException {
+	public Service listService(Long id) throws ServiceException {
 		return dao.listService(id);
 	}
 
@@ -76,10 +69,20 @@ public class ServiceService {
 	 * Método para obtener la lista de servicios de un hotel
 	 * 
 	 * @return
-	 * @throws SQLException
 	 */
-	public List<Service> listServicesOfHotel(Long hotelId) throws SQLException {
+	public List<Service> listServicesOfHotel(Long hotelId) {
 		return dao.listServicesOfHotel(hotelId);
+	}
+
+	/**
+	 * Método para obtener la lista de servicios de la reserva que se pasa por
+	 * parámetro
+	 * 
+	 * @param bookingId
+	 * @return
+	 */
+	public List<Service> listServicesOfBooking(Long bookingId) {
+		return dao.listServicesOfBooking(bookingId);
 	}
 
 }

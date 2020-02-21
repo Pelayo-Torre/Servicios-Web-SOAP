@@ -30,7 +30,7 @@ public class ClientWS implements IClientWS {
 	}
 
 	@Override
-	public Client listClient(Long id) throws SQLException {
+	public Client listClient(Long id) throws ClientException {
 		return clientService.listClient(id);
 	}
 

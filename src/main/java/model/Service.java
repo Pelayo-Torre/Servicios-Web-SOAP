@@ -5,28 +5,31 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table (name = "service")
+@Table(name = "service")
 public class Service {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private String code;
 	private Double price;
 
 	@ManyToOne
-	@JoinColumn(name="hotelId", nullable=false)
+	@JoinColumn(name = "hotelId", nullable = false)
 	private Hotel hotel;
-	
-	//private Set<Booking> bookings = new HashSet<Booking>();
+
+	@ManyToMany(mappedBy = "services")
+	private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
 	public Long getId() {
@@ -69,14 +72,14 @@ public class Service {
 		this.hotel = hotel;
 	}
 
-//	@XmlTransient
-//	public Set<Booking> getBookings() {
-//		return bookings;
-//	}
-//
-//	public void setBookings(Set<Booking> bookings) {
-//		this.bookings = bookings;
-//	}
+	@XmlTransient
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
+	}
 
 	/**
 	 * Constructor
@@ -84,15 +87,22 @@ public class Service {
 	public Service() {
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param name
+	 * @param code
+	 * @param price
+	 * @param hotel
+	 * @param bookings
+	 */
 	public Service(String name, String code, Double price, Hotel hotel, Set<Booking> bookings) {
 		super();
 		this.name = name;
 		this.code = code;
 		this.price = price;
 		this.hotel = hotel;
-//		this.bookings = bookings;
+		this.bookings = bookings;
 	}
-
-	
 
 }

@@ -1,6 +1,5 @@
 package services;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import exception.ClientException;
@@ -19,14 +18,14 @@ public class ClientService {
 	 * 
 	 * @param client
 	 * @return
-	 * @throws SQLException
 	 * @throws ClientException
 	 */
-	public String addClient(Client client) throws SQLException, ClientException {
+	public String addClient(Client client) throws ClientException {
 		clientValidator.validate(client);
-		if (dao.existsClient(client.getDni()))
-			throw new ClientException("El cliente que se añadir ya existe en el sistema", "404");
-		client.setActive(true);
+		Client c = dao.findClientByDNI(client.getDni());
+		if (c == null)
+			//TODO revisar codigo de error
+			throw new ClientException("El cliente con dni =  " + client.getDni() + " ya existe en el sistema", "404");
 		return dao.addClient(client);
 	}
 
@@ -35,14 +34,9 @@ public class ClientService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws SQLException
 	 * @throws ClientException
 	 */
-	public String deleteClient(Long id) throws SQLException, ClientException {
-		Client c = dao.listClient(id);
-		if (c == null)
-			throw new ClientException("El cliente que se desea eliminar no existe", "404");
-
+	public String deleteClient(Long id) throws ClientException {
 		return dao.deleteClient(id);
 	}
 
@@ -51,14 +45,10 @@ public class ClientService {
 	 * 
 	 * @param client
 	 * @return
-	 * @throws SQLException
 	 * @throws ClientException
 	 */
-	public String updateClient(Long id, Client client) throws SQLException, ClientException {
+	public String updateClient(Long id, Client client) throws ClientException {
 		clientValidator.validate(client);
-		Client c = dao.listClient(id);
-		if (c == null)
-			throw new ClientException("El cliente que se desea eliminar no existe", "404");
 		client.setId(id);
 		return dao.updateClient(client);
 	}
@@ -68,9 +58,9 @@ public class ClientService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws SQLException
+	 * @throws ClientException
 	 */
-	public Client listClient(Long id) throws SQLException {
+	public Client listClient(Long id) throws ClientException {
 		return dao.listClient(id);
 	}
 
@@ -78,10 +68,9 @@ public class ClientService {
 	 * Método para obtener la lista de clientes del hotel que se pasa por parametro
 	 * 
 	 * @return
-	 * @throws SQLException
 	 */
-	public List<Client> listClientsOfHotel(Long hotelId) throws SQLException {
-		return dao.listClients(hotelId);
+	public List<Client> listClientsOfHotel(Long hotelId) {
+		return dao.listClientsOfHotel(hotelId);
 	}
 
 }

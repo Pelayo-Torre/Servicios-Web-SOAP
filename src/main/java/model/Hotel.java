@@ -18,16 +18,21 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "hotel")
 public class Hotel implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	@Transient
-	private Location location;
+	private double latitude;
+	private double longitude;
 	private String country;
 	private int stars;
 	private String telephone;
 	private String address;
+
+	@Transient
+	private Location location;
 
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
 	private Set<Client> clients = new HashSet<Client>();
@@ -53,12 +58,22 @@ public class Hotel implements Serializable {
 		this.name = name;
 	}
 
-	public Location getLocation() {
-		return location;
+	@XmlTransient
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	@XmlTransient
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 
 	public String getCountry() {
@@ -91,6 +106,14 @@ public class Hotel implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	@XmlTransient
@@ -126,28 +149,17 @@ public class Hotel implements Serializable {
 	public Hotel() {
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param name
-	 * @param location
-	 * @param country
-	 * @param stars
-	 * @param telephone
-	 * @param address
-	 * @param clients
-	 * @param rooms
-	 * @param services
-	 */
-	public Hotel(String name, Location location, String country, int stars, String telephone, String address,
-			Set<Client> clients, Set<Room> rooms, Set<Service> services) {
+	public Hotel(String name, double latitude, double longitude, String country, int stars, String telephone,
+			String address, Location location, Set<Client> clients, Set<Room> rooms, Set<Service> services) {
 		super();
 		this.name = name;
-		this.location = location;
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.country = country;
 		this.stars = stars;
 		this.telephone = telephone;
 		this.address = address;
+		this.location = location;
 		this.clients = clients;
 		this.rooms = rooms;
 		this.services = services;

@@ -36,6 +36,6 @@ public class RoomWS implements IRoomWS{
 
 	@Override
 	public List<Room> listRoomsOfHotel(Long hotelId) throws SQLException {
-		return roomService.listRooms(hotelId);
+		return roomService.listRoomsOfHotel(hotelId);
 	}
 }

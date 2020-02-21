@@ -7,24 +7,23 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table (name = "client")
+@Table(name = "client")
 public class Client {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private String dni;
 	private String telephone;
 	private String email;
-	private boolean active;
 
 	@ManyToOne
-	@JoinColumn(name="hotelId", nullable=false)
+	@JoinColumn(name = "hotelId", nullable = false)
 	private Hotel hotel;
-	
-	
-	//private Set<Booking> bookings = new HashSet<Booking>();
+
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+	private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
 	public Long getId() {
@@ -68,22 +67,22 @@ public class Client {
 	}
 
 	@XmlTransient
-	public boolean isActive() {
-		return active;
+	public Hotel getHotel() {
+		return hotel;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
-	
-//	@XmlTransient
-//	public Set<Booking> getBookings() {
-//		return bookings;
-//	}
-//
-//	public void setBookings(Set<Booking> bookings) {
-//		this.bookings = bookings;
-//	}
+
+	@XmlTransient
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
+	}
 
 	/**
 	 * Constructor
