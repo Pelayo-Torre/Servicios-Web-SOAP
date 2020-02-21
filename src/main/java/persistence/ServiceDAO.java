@@ -49,7 +49,6 @@ public class ServiceDAO {
 			if (service == null)
 				throw new ServiceException("El servicio con id =  " + id + " no existe.", "404");
 
-			em.getTransaction().begin();
 			em.remove(service);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;

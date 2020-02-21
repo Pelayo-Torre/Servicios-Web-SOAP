@@ -49,7 +49,6 @@ public class BookingDAO {
 			if (booking == null)
 				throw new BookingException("La reserva con id =  " + id + " no existe.", "404");
 
-			em.getTransaction().begin();
 			em.remove(booking);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;

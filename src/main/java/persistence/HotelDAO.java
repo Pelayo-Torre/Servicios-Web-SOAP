@@ -48,7 +48,6 @@ public class HotelDAO {
 			if (hotel == null)
 				throw new HotelException("El hotel con id =  " + id + " no existe.", "404");
 
-			em.getTransaction().begin();
 			em.remove(hotel);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;

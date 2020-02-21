@@ -14,22 +14,22 @@ public class HotelWS implements IHotelWS {
 	private HotelService hotelService = new HotelService();
 
 	@Override
-	public String addHotel(Hotel hotel) throws HotelException, Exception {
+	public String addHotel(Hotel hotel) throws HotelException {
 		return hotelService.addHotel(hotel);
 	}
 
 	@Override
-	public String deleteHotel(Long id) throws Exception {
+	public String deleteHotel(Long id) throws HotelException {
 		return hotelService.deleteHotel(id);
 	}
 
 	@Override
-	public String updateHotel(Long id, Hotel hotel) throws HotelException, Exception {
+	public String updateHotel(Long id, Hotel hotel) throws HotelException {
 		return hotelService.updateHotel(id, hotel);
 	}
 
 	@Override
-	public Hotel listHotel(Long id) throws Exception {
+	public Hotel listHotel(Long id) throws HotelException {
 		return hotelService.listHotel(id);
 	}
 

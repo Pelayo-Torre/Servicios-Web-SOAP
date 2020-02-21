@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "hotel")
 public class Hotel implements Serializable {
 
 	private static final long serialVersionUID = 1L;

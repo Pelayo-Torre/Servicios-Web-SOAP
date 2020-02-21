@@ -49,7 +49,6 @@ public class RoomDAO {
 			if (room == null)
 				throw new RoomException("La habitación con id =  " + id + " no existe.", "404");
 
-			em.getTransaction().begin();
 			em.remove(room);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;

@@ -1,6 +1,5 @@
 package web.services;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.jws.WebService;
@@ -15,17 +14,17 @@ public class ClientWS implements IClientWS {
 	private ClientService clientService = new ClientService();
 
 	@Override
-	public String addClient(Client client) throws ClientException, SQLException {
+	public String addClient(Client client) throws ClientException {
 		return clientService.addClient(client);
 	}
 
 	@Override
-	public String deleteClient(Long id) throws ClientException, SQLException {
+	public String deleteClient(Long id) throws ClientException {
 		return clientService.deleteClient(id);
 	}
 
 	@Override
-	public String updateClient(Long id, Client client) throws ClientException, SQLException {
+	public String updateClient(Long id, Client client) throws ClientException {
 		return clientService.updateClient(id, client);
 	}
 
@@ -35,7 +34,7 @@ public class ClientWS implements IClientWS {
 	}
 
 	@Override
-	public List<Client> listClientsOfHotel(Long hotelId) throws SQLException {
+	public List<Client> listClientsOfHotel(Long hotelId) {
 		return clientService.listClientsOfHotel(hotelId);
 	}
 

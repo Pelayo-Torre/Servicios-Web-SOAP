@@ -49,7 +49,6 @@ public class ClientDAO {
 			if (client == null)
 				throw new ClientException("El cliente con id =  " + id + " no existe.", "404");
 
-			em.getTransaction().begin();
 			em.remove(client);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;

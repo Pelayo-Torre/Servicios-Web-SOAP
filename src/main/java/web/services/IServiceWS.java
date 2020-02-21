@@ -1,6 +1,5 @@
 package web.services;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -16,18 +15,18 @@ import model.Service;
 public interface IServiceWS {
 
 	@WebMethod
-	public String addService(Service service) throws ServiceException, SQLException;
+	public String addService(Service service) throws ServiceException;
 
 	@WebMethod
-	public String deleteService(Long id) throws ServiceException, SQLException;
+	public String deleteService(Long id) throws ServiceException;
 
 	@WebMethod
-	public String updateService(Long id, Service service) throws ServiceException, SQLException;
+	public String updateService(Long id, Service service) throws ServiceException;
 
 	@WebMethod
-	public Service listService(Long id) throws SQLException;
+	public Service listService(Long id) throws ServiceException;
 
 	@WebMethod
-	public List<Service> listServicesOfHotel(Long hotelId) throws SQLException;
+	public List<Service> listServicesOfHotel(Long hotelId);
 
 }

@@ -15,18 +15,18 @@ import model.Client;
 public interface IClientWS {
 
 	@WebMethod
-	public String addClient(Client client) throws ClientException, Exception;
+	public String addClient(Client client) throws ClientException;
 
 	@WebMethod
-	public String deleteClient(Long id) throws Exception;
+	public String deleteClient(Long id) throws ClientException;
 
 	@WebMethod
-	public String updateClient(Long id, Client client) throws ClientException, Exception;
+	public String updateClient(Long id, Client client) throws ClientException;
 
 	@WebMethod
 	public Client listClient(Long id) throws ClientException;
 
 	@WebMethod
-	public List<Client> listClientsOfHotel(Long hotelId) throws Exception;
+	public List<Client> listClientsOfHotel(Long hotelId);
 
 }

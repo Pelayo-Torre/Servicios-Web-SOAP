@@ -2,7 +2,9 @@ package services;
 
 import java.util.List;
 
+import exception.BookingException;
 import exception.RoomException;
+import model.Booking;
 import model.Room;
 import persistence.ManagerDAO;
 import persistence.RoomDAO;
@@ -22,6 +24,11 @@ public class RoomService {
 	 */
 	public String addRoom(Room room) throws RoomException {
 		roomValidator.validate(room);
+		Room r = dao.findRoomByCode(room.getCode());
+		if (r == null)
+			// TODO revisar codigo de error
+			throw new RoomException("La habitación con código =  " + room.getCode() + " ya existe en el sistema",
+					"404");
 		return dao.addRoom(room);
 	}
 
