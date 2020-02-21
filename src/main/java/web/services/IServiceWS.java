@@ -7,6 +7,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import exception.HotelException;
 import exception.ServiceException;
 import model.Service;
 
@@ -15,7 +16,7 @@ import model.Service;
 public interface IServiceWS {
 
 	@WebMethod
-	public String addService(Service service) throws ServiceException;
+	public String addService(Service service, Long hotelId) throws ServiceException, HotelException;
 
 	@WebMethod
 	public String deleteService(Long id) throws ServiceException;

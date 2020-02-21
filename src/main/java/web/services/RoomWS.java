@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import exception.HotelException;
 import exception.RoomException;
 import model.Room;
 import services.RoomService;
@@ -14,8 +15,8 @@ public class RoomWS implements IRoomWS {
 	RoomService roomService = new RoomService();
 
 	@Override
-	public String addRoom(Room room) throws RoomException {
-		return roomService.addRoom(room);
+	public String addRoom(Room room, Long hotelId) throws RoomException, HotelException {
+		return roomService.addRoom(room, hotelId);
 	}
 
 	@Override

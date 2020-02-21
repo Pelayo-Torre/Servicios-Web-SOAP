@@ -7,6 +7,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import exception.HotelException;
 import exception.RoomException;
 import model.Room;
 
@@ -15,7 +16,7 @@ import model.Room;
 public interface IRoomWS {
 
 	@WebMethod
-	public String addRoom(Room room) throws RoomException;
+	public String addRoom(Room room, Long hotelId) throws RoomException, HotelException;
 
 	@WebMethod
 	public String deleteRoom(Long id) throws RoomException;

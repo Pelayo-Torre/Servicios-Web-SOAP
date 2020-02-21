@@ -3,6 +3,7 @@ package persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import exception.ServiceException;
 import model.Service;
@@ -109,8 +110,10 @@ public class ServiceDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("Select s From service s Where s.code = :code", Service.class)
+			resultList = em.createQuery("Select s From Service s Where s.code = :code", Service.class)
 					.setParameter("code", code).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
 		} finally {
 			dba.closeEm();
 		}
@@ -129,29 +132,8 @@ public class ServiceDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("select s From service s where s.hotelId = :hotelId", Service.class)
+			resultList = em.createQuery("select s From Service s where s.hotel.id = :hotelId", Service.class)
 					.setParameter("hotelId", hotelId).getResultList();
-		} finally {
-			dba.closeEm();
-		}
-		return resultList;
-	}
-
-	/**
-	 * Método para obtener las habitaciones de la reserva que se pasa por parametro
-	 * 
-	 * @return
-	 */
-	public List<Service> listServicesOfBooking(Long bookingId) {
-
-		List<Service> resultList = null;
-
-		Dba dba = new Dba();
-		try {
-			EntityManager em = dba.getActiveEm();
-			// TODO review, change, intermediate table is necessary
-			resultList = em.createQuery("select s From service s where s.hotelId = :hotelId", Service.class)
-					.setParameter("hotelId", bookingId).getResultList();
 		} finally {
 			dba.closeEm();
 		}

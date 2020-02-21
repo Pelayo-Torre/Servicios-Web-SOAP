@@ -8,6 +8,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
 import exception.ClientException;
+import exception.HotelException;
 import model.Client;
 
 @WebService
@@ -15,7 +16,7 @@ import model.Client;
 public interface IClientWS {
 
 	@WebMethod
-	public String addClient(Client client) throws ClientException;
+	public String addClient(Client client, Long hotelId) throws ClientException, HotelException;
 
 	@WebMethod
 	public String deleteClient(Long id) throws ClientException;

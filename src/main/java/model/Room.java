@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,9 +8,10 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "room")
-public class Room {
+public class Room implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

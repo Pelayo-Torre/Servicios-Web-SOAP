@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,11 +35,11 @@ public class Booking implements Serializable {
 	@JoinColumn(name = "clientId", nullable = false)
 	private Client client;
 
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "bookingservice", joinColumns = @JoinColumn(name = "bookingId"), inverseJoinColumns = @JoinColumn(name = "serviceId"))
 	private Set<Service> services = new HashSet<Service>();
 
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "bookingroom", joinColumns = @JoinColumn(name = "bookingId"), inverseJoinColumns = @JoinColumn(name = "roomId"))
 	private Set<Room> rooms = new HashSet<Room>();
 

@@ -3,6 +3,7 @@ package persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import exception.RoomException;
 import model.Room;
@@ -110,8 +111,10 @@ public class RoomDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("Select r From room r Where r.code = :code", Room.class)
+			resultList = em.createQuery("Select r From Room r Where r.code = :code", Room.class)
 					.setParameter("code", code).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
 		} finally {
 			dba.closeEm();
 		}
@@ -130,33 +133,11 @@ public class RoomDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("select r from room r where r.hotelId = :hotelId", Room.class)
+			resultList = em.createQuery("select r from Room r where r.hotel.id = :hotelId", Room.class)
 					.setParameter("hotelId", hotelId).getResultList();
 		} finally {
 			dba.closeEm();
 		}
 		return resultList;
 	}
-
-	/**
-	 * Método para obtener las habitaciones de la reserva que se pasa por parametro
-	 * 
-	 * @return
-	 */
-	public List<Room> listRoomsOfBooking(Long bookingId) {
-
-		List<Room> resultList = null;
-
-		Dba dba = new Dba();
-		try {
-			EntityManager em = dba.getActiveEm();
-			// TODO review, change, intermediate table is necessary
-			resultList = em.createQuery("select r from room r where r.hotelId = :hotelId", Room.class)
-					.setParameter("hotelId", bookingId).getResultList();
-		} finally {
-			dba.closeEm();
-		}
-		return resultList;
-	}
-
 }

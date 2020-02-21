@@ -5,6 +5,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import exception.ClientException;
+import exception.HotelException;
 import model.Client;
 import services.ClientService;
 
@@ -14,8 +15,8 @@ public class ClientWS implements IClientWS {
 	private ClientService clientService = new ClientService();
 
 	@Override
-	public String addClient(Client client) throws ClientException {
-		return clientService.addClient(client);
+	public String addClient(Client client, Long hotelId) throws ClientException, HotelException {
+		return clientService.addClient(client, hotelId);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import exception.BookingException;
 import model.Booking;
@@ -109,9 +110,13 @@ public class BookingDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("Select b From booking b Where b.code = :code", Booking.class)
+			resultList = em.createQuery("Select b From Booking b Where b.code = :code", Booking.class)
 					.setParameter("code", code).getSingleResult();
-		} finally {
+		} 
+		catch (NoResultException e) {
+			return null;
+		} 
+		finally {
 			dba.closeEm();
 		}
 		return resultList;
@@ -129,11 +134,12 @@ public class BookingDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("select b from booking b where b.clientId = :clientId", Booking.class)
+			resultList = em.createQuery("select b from Booking b where b.client.id = :clientId", Booking.class)
 					.setParameter("clientId", clientId).getResultList();
 		} finally {
 			dba.closeEm();
 		}
 		return resultList;
 	}
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import exception.HotelException;
 import exception.ServiceException;
 import model.Service;
 import services.ServiceService;
@@ -14,8 +15,8 @@ public class ServiceWS implements IServiceWS {
 	ServiceService serviceService = new ServiceService();
 
 	@Override
-	public String addService(Service service) throws ServiceException {
-		return serviceService.addService(service);
+	public String addService(Service service, Long hotelId) throws ServiceException, HotelException {
+		return serviceService.addService(service, hotelId);
 	}
 
 	@Override

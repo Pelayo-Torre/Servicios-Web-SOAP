@@ -3,14 +3,18 @@ package services;
 import java.util.List;
 
 import exception.ClientException;
+import exception.HotelException;
 import model.Client;
+import model.Hotel;
 import persistence.ClientDAO;
+import persistence.HotelDAO;
 import persistence.ManagerDAO;
 import validators.ClientValidator;
 
 public class ClientService {
 
 	private ClientDAO dao = ManagerDAO.getInstance().getClientDAO();
+	private HotelDAO hotelDao = ManagerDAO.getInstance().getHotelDAO();
 	private ClientValidator clientValidator = new ClientValidator();
 
 	/**
@@ -19,13 +23,16 @@ public class ClientService {
 	 * @param client
 	 * @return
 	 * @throws ClientException
+	 * @throws HotelException 
 	 */
-	public String addClient(Client client) throws ClientException {
+	public String addClient(Client client, Long hotelId) throws ClientException, HotelException {
 		clientValidator.validate(client);
 		Client c = dao.findClientByDNI(client.getDni());
-		if (c == null)
-			//TODO revisar codigo de error
+		if (c != null)
 			throw new ClientException("El cliente con dni =  " + client.getDni() + " ya existe en el sistema", "404");
+		
+		Hotel h = hotelDao.listHotel(hotelId);
+		client.setHotel(h);
 		return dao.addClient(client);
 	}
 

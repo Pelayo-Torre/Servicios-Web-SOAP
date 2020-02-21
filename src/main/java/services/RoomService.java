@@ -1,11 +1,16 @@
 package services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import exception.BookingException;
+import exception.HotelException;
 import exception.RoomException;
 import model.Booking;
+import model.Hotel;
 import model.Room;
+import persistence.BookingDAO;
+import persistence.HotelDAO;
 import persistence.ManagerDAO;
 import persistence.RoomDAO;
 import validators.RoomValidator;
@@ -13,6 +18,8 @@ import validators.RoomValidator;
 public class RoomService {
 
 	private RoomDAO dao = ManagerDAO.getInstance().getRoomDAO();
+	private HotelDAO hotelDao = ManagerDAO.getInstance().getHotelDAO();
+	private BookingDAO bookingDao = ManagerDAO.getInstance().getBookingDAO();
 	private RoomValidator roomValidator = new RoomValidator();
 
 	/**
@@ -21,14 +28,17 @@ public class RoomService {
 	 * @param room
 	 * @return
 	 * @throws RoomException
+	 * @throws HotelException 
 	 */
-	public String addRoom(Room room) throws RoomException {
+	public String addRoom(Room room, Long hotelId) throws RoomException, HotelException {
 		roomValidator.validate(room);
 		Room r = dao.findRoomByCode(room.getCode());
-		if (r == null)
-			// TODO revisar codigo de error
-			throw new RoomException("La habitación con código =  " + room.getCode() + " ya existe en el sistema",
-					"404");
+		if (r != null)
+			throw new RoomException("La habitación con código =  " + room.getCode() + " ya existe en el sistema","404");
+		
+		Hotel h = hotelDao.listHotel(hotelId);
+		room.setHotel(h);
+		room.setType(room.getRoomType().name());
 		return dao.addRoom(room);
 	}
 
@@ -81,9 +91,11 @@ public class RoomService {
 	 * parámetro
 	 * 
 	 * @return
+	 * @throws BookingException 
 	 */
-	public List<Room> listRoomsOfBooking(Long bookingId) {
-		return dao.listRoomsOfBooking(bookingId);
+	public List<Room> listRoomsOfBooking(Long bookingId) throws BookingException {
+		Booking b = bookingDao.listBooking(bookingId);
+		return b.getRooms().stream().collect(Collectors.toList());
 	}
 
 }

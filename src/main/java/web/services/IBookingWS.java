@@ -9,14 +9,25 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
 import exception.BookingException;
+import exception.ClientException;
+import exception.RoomException;
+import exception.ServiceException;
 import model.Booking;
+import model.Room;
+import model.Service;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
 public interface IBookingWS {
 
 	@WebMethod
-	public String addBooking(Booking booking) throws BookingException, ParseException;
+	public String addBooking(Booking booking, Long clientId) throws BookingException, ParseException, ClientException;
+	
+	@WebMethod
+	public String addRoomsToBooking(Long id, List<Room> rooms) throws RoomException, BookingException;
+	
+	@WebMethod
+	public String addServicesToBooking(Long id, List<Service> services) throws ServiceException, BookingException;
 
 	@WebMethod
 	public String updateBooking(Long id, Booking booking) throws BookingException, ParseException;
@@ -28,6 +39,6 @@ public interface IBookingWS {
 	public Booking listBooking(Long id) throws ParseException, BookingException;
 
 	@WebMethod
-	public List<Booking> listBookings(Long clientId) throws ParseException;
+	public List<Booking> listBookingsOfClient(Long clientId) throws ParseException;
 
 }

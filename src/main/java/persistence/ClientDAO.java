@@ -3,6 +3,7 @@ package persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import exception.ClientException;
 import model.Client;
@@ -109,9 +110,13 @@ public class ClientDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("Select c From client c Where c.dni = :dni", Client.class)
+			resultList = em.createQuery("Select c From Client c Where c.dni = :dni", Client.class)
 					.setParameter("dni", dni).getSingleResult();
-		} finally {
+		} 
+		catch (NoResultException e) {
+			return null;
+		} 
+		finally {
 			dba.closeEm();
 		}
 		return resultList;
@@ -129,7 +134,7 @@ public class ClientDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
-			resultList = em.createQuery("select c from client c where c.hotelId = :hotelId", Client.class)
+			resultList = em.createQuery("select c from Client c where c.hotel.id = :hotelId", Client.class)
 					.setParameter("hotelId", hotelId).getResultList();
 		} finally {
 			dba.closeEm();
