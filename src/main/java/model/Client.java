@@ -19,15 +19,16 @@ public class Client implements Serializable{
 	private String dni;
 	private String telephone;
 	private String email;
+	private Integer active;
 
 	@ManyToOne
-	@JoinColumn(name = "hotelId", nullable = false)
+	@JoinColumn(name = "hotelId")
 	private Hotel hotel;
 
 	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	private Set<Booking> bookings = new HashSet<Booking>();
 
-	@XmlTransient
+	//@XmlTransient
 	public Long getId() {
 		return id;
 	}
@@ -42,6 +43,14 @@ public class Client implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+		
+	public Integer getActive() {
+		return active;
+	}
+
+	public void setActive(Integer active) {
+		this.active = active;
 	}
 
 	public String getDni() {

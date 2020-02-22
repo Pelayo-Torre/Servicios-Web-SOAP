@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class DateUtils {
 
-	private final static String dateString = "dd-mm-yyyy";
+	private final static String dateString = "dd-MM-yyyy";
 
 	/**
 	 * Método para convertir la fecha que se pasa por parámetro a string

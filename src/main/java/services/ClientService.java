@@ -9,6 +9,7 @@ import model.Hotel;
 import persistence.ClientDAO;
 import persistence.HotelDAO;
 import persistence.ManagerDAO;
+import utils.Constants;
 import validators.ClientValidator;
 
 public class ClientService {
@@ -27,12 +28,21 @@ public class ClientService {
 	 */
 	public String addClient(Client client, Long hotelId) throws ClientException, HotelException {
 		clientValidator.validate(client);
+		
+		if(hotelId == null)
+			throw new HotelException("El Idenificador del hotel es obligatorio", "404");
+		
 		Client c = dao.findClientByDNI(client.getDni());
 		if (c != null)
 			throw new ClientException("El cliente con dni =  " + client.getDni() + " ya existe en el sistema", "404");
 		
 		Hotel h = hotelDao.listHotel(hotelId);
+		
+		if(h == null)
+			throw new HotelException("El hotel con ID = " + hotelId + " no existe en el sistema", "404");
+		
 		client.setHotel(h);
+		client.setActive(Constants.ACTIVE);
 		return dao.addClient(client);
 	}
 
@@ -44,7 +54,13 @@ public class ClientService {
 	 * @throws ClientException
 	 */
 	public String deleteClient(Long id) throws ClientException {
-		return dao.deleteClient(id);
+		Client client = dao.listClient(id);
+		
+		if(client == null)
+			throw new ClientException("El client con ID " + id + " no existe en el sistema", "404");
+		
+		client.setActive(Constants.INACTIVE);
+		return updateClient(client);
 	}
 
 	/**
@@ -54,9 +70,20 @@ public class ClientService {
 	 * @return
 	 * @throws ClientException
 	 */
-	public String updateClient(Long id, Client client) throws ClientException {
+	public String updateClient(Client client) throws ClientException {
 		clientValidator.validate(client);
-		client.setId(id);
+		
+		if(client.getActive() == null)
+			client.setActive(Constants.ACTIVE);
+		else if(client.getActive() != 0 && client.getActive() != 1)
+			throw new ClientException("El campo activo del cliente es inválido", "404");
+		
+		if(dao.listClient(client.getId()) == null)
+			throw new ClientException("El client con ID " + client.getId() + " no se encuentra registrado en el sistema", "404");
+		
+		Hotel hotel = hotelDao.getHotelOfClient(client.getId());
+		client.setHotel(hotel);
+		
 		return dao.updateClient(client);
 	}
 
@@ -68,15 +95,23 @@ public class ClientService {
 	 * @throws ClientException
 	 */
 	public Client listClient(Long id) throws ClientException {
-		return dao.listClient(id);
+		Client client = dao.listClient(id);
+		
+		if(client == null)
+			throw new ClientException("El cliente con ID " + id + " no existe en el sistema", "404");
+		
+		return client;
 	}
 
 	/**
 	 * Método para obtener la lista de clientes del hotel que se pasa por parametro
 	 * 
 	 * @return
+	 * @throws HotelException 
 	 */
-	public List<Client> listClientsOfHotel(Long hotelId) {
+	public List<Client> listClientsOfHotel(Long hotelId) throws HotelException {
+		if(hotelDao.listHotel(hotelId) == null)
+			throw new HotelException("El hotel con ID " + hotelId + " no está registrado en el sistema", "404");
 		return dao.listClientsOfHotel(hotelId);
 	}
 

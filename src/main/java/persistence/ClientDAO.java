@@ -1,5 +1,6 @@
 package persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -26,37 +27,16 @@ public class ClientDAO {
 		Dba dba = new Dba();
 		try {
 			EntityManager em = dba.getActiveEm();
+			
 			em.persist(client);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;
+			
 		} finally {
 			dba.closeEm();
 		}
 	}
 
-	/**
-	 * Método para borrar el cliente cuyo id se pasa por parametro
-	 * 
-	 * @return
-	 * @throws ClientException
-	 */
-	public String deleteClient(Long id) throws ClientException {
-
-		Dba dba = new Dba();
-		try {
-			EntityManager em = dba.getActiveEm();
-
-			Client client = em.find(Client.class, id);
-			if (client == null)
-				throw new ClientException("El cliente con id =  " + id + " no existe.", "404");
-
-			em.remove(client);
-			em.getTransaction().commit();
-			return Constants.RESPONSE_OK;
-		} finally {
-			dba.closeEm();
-		}
-	}
 
 	/**
 	 * Método para actualizar el cliente que se pasa por parámetro
@@ -66,10 +46,12 @@ public class ClientDAO {
 	public String updateClient(Client client) {
 		Dba dba = new Dba();
 		try {
+			
 			EntityManager em = dba.getActiveEm();
 			em.merge(client);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;
+			
 		} finally {
 			dba.closeEm();
 		}
@@ -81,7 +63,7 @@ public class ClientDAO {
 	 * @return
 	 * @throws ClientException
 	 */
-	public Client listClient(Long id) throws ClientException {
+	public Client listClient(Long id)  {
 
 		Client client = null;
 		Dba dba = new Dba();
@@ -89,10 +71,11 @@ public class ClientDAO {
 			EntityManager em = dba.getActiveEm();
 
 			client = em.find(Client.class, id);
-			if (client == null)
-				throw new ClientException("El cliente con id =  " + id + " no existe.", "404");
 
-		} finally {
+		} catch (NoResultException e) {
+			return null;
+		} 
+		finally {
 			dba.closeEm();
 		}
 		return client;
@@ -136,9 +119,32 @@ public class ClientDAO {
 			EntityManager em = dba.getActiveEm();
 			resultList = em.createQuery("select c from Client c where c.hotel.id = :hotelId", Client.class)
 					.setParameter("hotelId", hotelId).getResultList();
-		} finally {
+		} catch (NoResultException e) {
+			return new ArrayList<Client>();
+		}finally {
 			dba.closeEm();
 		}
 		return resultList;
 	}
+	
+	public Client getClientOfBooking(Long idBooking){
+		Client client = null;
+		Long id = null;
+
+		Dba dba = new Dba();
+		try {
+			EntityManager em = dba.getActiveEm();
+			id = em.createQuery("select b.client.id from Booking b where b.id = :idBooking", Long.class)
+					.setParameter("idBooking", idBooking).getSingleResult();
+			
+			client = em.find(Client.class, id);
+			
+		} finally {
+			dba.closeEm();
+		}
+		return client;
+	}
+	
+	
+	
 }

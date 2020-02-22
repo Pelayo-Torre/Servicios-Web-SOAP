@@ -15,15 +15,6 @@ import model.Hotel;
 public interface IHotelWS {
 
 	@WebMethod
-	public String addHotel(Hotel hotel) throws HotelException;
-
-	@WebMethod
-	public String deleteHotel(Long id) throws HotelException;
-
-	@WebMethod
-	public String updateHotel(Long id, Hotel hotel) throws HotelException;
-
-	@WebMethod
 	public Hotel listHotel(Long id) throws HotelException;
 
 	@WebMethod

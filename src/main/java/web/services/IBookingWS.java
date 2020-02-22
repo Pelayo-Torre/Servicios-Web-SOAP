@@ -12,33 +12,41 @@ import exception.BookingException;
 import exception.ClientException;
 import exception.RoomException;
 import exception.ServiceException;
-import model.Booking;
 import model.Room;
-import model.Service;
+import model.dtos.BookingAddDTO;
+import model.dtos.BookingDTO;
+import model.dtos.RoomDTO;
+import model.dtos.ServiceDTO;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
 public interface IBookingWS {
 
 	@WebMethod
-	public String addBooking(Booking booking, Long clientId) throws BookingException, ParseException, ClientException;
+	public String addBooking(BookingAddDTO booking) throws BookingException, ParseException, ClientException;
 	
 	@WebMethod
-	public String addRoomsToBooking(Long id, List<Room> rooms) throws RoomException, BookingException;
+	public String addRoomsToBooking(Long idBooking, List<Room> rooms) throws RoomException, BookingException;
 	
 	@WebMethod
-	public String addServicesToBooking(Long id, List<Service> services) throws ServiceException, BookingException;
+	public String addServicesToBooking(Long idBooking, List<ServiceDTO> services) throws ServiceException, BookingException;
+	
+	@WebMethod
+	public String removeServicesToBooking(Long idBooking, List<ServiceDTO> services) throws ServiceException, BookingException;
+	
+	@WebMethod
+	public String removeRoomsToBooking(Long idBooking, List<RoomDTO> services) throws RoomException, BookingException;
 
 	@WebMethod
-	public String updateBooking(Long id, Booking booking) throws BookingException, ParseException;
+	public String updateBooking(BookingDTO booking) throws BookingException, ParseException;
 
 	@WebMethod
 	public String deleteBooking(Long id) throws BookingException, ParseException;
 
 	@WebMethod
-	public Booking listBooking(Long id) throws ParseException, BookingException;
+	public BookingDTO listBooking(Long id) throws BookingException;
 
 	@WebMethod
-	public List<Booking> listBookingsOfClient(Long clientId) throws ParseException;
+	public List<BookingDTO> listBookingsOfClient(Long clientId) throws ClientException;
 
 }

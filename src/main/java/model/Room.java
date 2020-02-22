@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class Room implements Serializable {
@@ -17,19 +16,18 @@ public class Room implements Serializable {
 	private Long id;
 	private String code;
 	private Double price;
-	private String type;
+	private Integer active;
 
-	@Transient
+	@Enumerated(EnumType.STRING)
 	private RoomType roomType;
 
 	@ManyToOne
-	@JoinColumn(name = "hotelId", nullable = false)
+	@JoinColumn(name = "hotelId")
 	private Hotel hotel;
 
-	@ManyToMany(mappedBy = "rooms")
+	@ManyToMany(mappedBy = "rooms", cascade=CascadeType.ALL)
 	private Set<Booking> bookings = new HashSet<Booking>();
 
-	@XmlTransient
 	public Long getId() {
 		return id;
 	}
@@ -54,15 +52,6 @@ public class Room implements Serializable {
 		this.price = price;
 	}
 
-	@XmlTransient
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public RoomType getRoomType() {
 		return roomType;
 	}
@@ -71,7 +60,6 @@ public class Room implements Serializable {
 		this.roomType = roomType;
 	}
 
-	@XmlTransient
 	public Hotel getHotel() {
 		return hotel;
 	}
@@ -80,13 +68,20 @@ public class Room implements Serializable {
 		this.hotel = hotel;
 	}
 
-	@XmlTransient
 	public Set<Booking> getBookings() {
 		return bookings;
 	}
 
 	public void setBookings(Set<Booking> bookings) {
 		this.bookings = bookings;
+	}
+	
+	public Integer getActive() {
+		return active;
+	}
+
+	public void setActive(Integer active) {
+		this.active = active;
 	}
 
 	/**
@@ -105,14 +100,40 @@ public class Room implements Serializable {
 	 * @param hotel
 	 * @param bookings
 	 */
-	public Room(String code, Double price, String type, RoomType roomType, Hotel hotel, Set<Booking> bookings) {
+	public Room(String code, Double price, RoomType roomType, Hotel hotel, Set<Booking> bookings) {
 		super();
 		this.code = code;
 		this.price = price;
-		this.type = type;
 		this.roomType = roomType;
 		this.hotel = hotel;
 		this.bookings = bookings;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Room other = (Room) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
 
 }

@@ -9,25 +9,26 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import exception.ClientException;
 import exception.HotelException;
-import model.Client;
+import model.dtos.ClientAddDTO;
+import model.dtos.ClientDTO;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
 public interface IClientWS {
 
 	@WebMethod
-	public String addClient(Client client, Long hotelId) throws ClientException, HotelException;
+	public String addClient(ClientAddDTO client) throws ClientException, HotelException;
 
 	@WebMethod
 	public String deleteClient(Long id) throws ClientException;
 
 	@WebMethod
-	public String updateClient(Long id, Client client) throws ClientException;
+	public String updateClient(ClientDTO client) throws ClientException;
 
 	@WebMethod
-	public Client listClient(Long id) throws ClientException;
+	public ClientDTO listClient(Long id) throws ClientException;
 
 	@WebMethod
-	public List<Client> listClientsOfHotel(Long hotelId);
+	public List<ClientDTO> listClientsOfHotel(Long hotelId) throws HotelException;
 
 }

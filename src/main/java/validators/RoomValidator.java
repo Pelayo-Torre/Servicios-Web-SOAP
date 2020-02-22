@@ -16,6 +16,9 @@ public class RoomValidator {
 		if(room.getRoomType() == null)
 			throw new RoomException("El tipo de habitación es obligatorio", "415");
 		
+		if(room.getCode() == null || "".equals(room.getCode()))
+			throw new RoomException("El código de habitación es obligatorio", "415");
+		
 	}
 
 }

@@ -7,7 +7,7 @@ public class ServiceValidator {
 	
 	public void validate(Service service) throws ServiceException {
 		
-		if(service.getName() == null)
+		if(service.getName() == null || "".equals(service.getName()))
 			throw new ServiceException("El nombre del servicio es obligatorio", "415");
 		
 		if(service.getPrice() == null)

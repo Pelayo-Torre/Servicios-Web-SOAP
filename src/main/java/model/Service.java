@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,14 +23,14 @@ public class Service implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	private String code;
 	private Double price;
+	private Integer active;
 
 	@ManyToOne
-	@JoinColumn(name = "hotelId", nullable = false)
+	@JoinColumn(name = "hotelId")
 	private Hotel hotel;
 
-	@ManyToMany(mappedBy = "services")
+	@ManyToMany(mappedBy = "services", cascade=CascadeType.ALL)
 	private Set<Booking> bookings = new HashSet<Booking>();
 
 	@XmlTransient
@@ -47,14 +48,6 @@ public class Service implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public Double getPrice() {
@@ -81,6 +74,14 @@ public class Service implements Serializable{
 	public void setBookings(Set<Booking> bookings) {
 		this.bookings = bookings;
 	}
+	
+	public Integer getActive() {
+		return active;
+	}
+
+	public void setActive(Integer active) {
+		this.active = active;
+	}
 
 	/**
 	 * Constructor
@@ -97,13 +98,39 @@ public class Service implements Serializable{
 	 * @param hotel
 	 * @param bookings
 	 */
-	public Service(String name, String code, Double price, Hotel hotel, Set<Booking> bookings) {
+	public Service(String name,  Double price, Hotel hotel, Set<Booking> bookings) {
 		super();
 		this.name = name;
-		this.code = code;
 		this.price = price;
 		this.hotel = hotel;
 		this.bookings = bookings;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Service other = (Service) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
 
 }

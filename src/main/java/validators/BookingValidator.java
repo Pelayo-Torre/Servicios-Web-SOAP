@@ -24,7 +24,6 @@ public class BookingValidator {
 		else if (startDate.compareTo(endDate) > 0)
 			throw new BookingException("La fecha de inicio no puede ser posterior a la fecha de finalización", "415");
 		
-		
 		if(booking.getPrice() == null)
 			throw new BookingException("El precio de la reserva es obligatorio", "415");
 		

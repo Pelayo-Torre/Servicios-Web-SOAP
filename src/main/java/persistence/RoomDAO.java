@@ -1,5 +1,6 @@
 package persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -89,10 +90,10 @@ public class RoomDAO {
 			EntityManager em = dba.getActiveEm();
 
 			room = em.find(Room.class, id);
-			if (room == null)
-				throw new RoomException("La habitación con id =  " + id + " no existe.", "404");
-
-		} finally {
+			
+		} catch (NoResultException e) {
+			return null;
+		}finally {
 			dba.closeEm();
 		}
 		return room;
@@ -135,7 +136,9 @@ public class RoomDAO {
 			EntityManager em = dba.getActiveEm();
 			resultList = em.createQuery("select r from Room r where r.hotel.id = :hotelId", Room.class)
 					.setParameter("hotelId", hotelId).getResultList();
-		} finally {
+		} catch (NoResultException e) {
+			return new ArrayList<Room>();
+		}finally {
 			dba.closeEm();
 		}
 		return resultList;

@@ -1,10 +1,13 @@
 package services;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import exception.BookingException;
 import exception.ClientException;
+import exception.RoomException;
+import exception.ServiceException;
 import model.Booking;
 import model.Client;
 import model.Room;
@@ -12,12 +15,17 @@ import model.Service;
 import persistence.BookingDAO;
 import persistence.ClientDAO;
 import persistence.ManagerDAO;
+import persistence.RoomDAO;
+import persistence.ServiceDAO;
+import utils.Constants;
 import validators.BookingValidator;
 
 public class BookingService {
 
 	private BookingDAO dao = ManagerDAO.getInstance().getBookingDAO();
 	private ClientDAO clientDao = ManagerDAO.getInstance().getClientDAO();
+	private ServiceDAO serviceDao = ManagerDAO.getInstance().getServiceDAO();
+	private RoomDAO roomDao = ManagerDAO.getInstance().getRoomDAO();
 	private BookingValidator bookingValidator = new BookingValidator();
 
 	/**
@@ -31,13 +39,17 @@ public class BookingService {
 	 */
 	public String addBooking(Booking booking, Long clientId) throws BookingException, ParseException, ClientException {
 		bookingValidator.validate(booking);
-		Booking b = dao.findBookingByCode(booking.getCode());
-		if (b != null)
-			throw new BookingException("La reserva con código =  " + booking.getCode() + " ya existe en el sistema",
-					"404");
+		
+		if(clientId == null)
+			throw new ClientException("El Identificador del cliente es obligatorio" , "404");
 		
 		Client c = clientDao.listClient(clientId);
+		
+		if(c == null)
+			throw new ClientException("El cliente con ID " + clientId + " no existe en el sistema" , "404");
+		
 		booking.setClient(c);
+		booking.setCancelled(Constants.INACTIVE);
 		
 		return dao.addBooking(booking);
 	}
@@ -51,9 +63,31 @@ public class BookingService {
 	 */
 	public String addRoomsToBooking(Long id, List<Room> rooms) throws BookingException {
 		Booking b = dao.listBooking(id);
-		for (Room r : rooms)
-			b.getRooms().add(r);
-		return dao.updateBooking(b);
+		
+		if(b == null)
+			throw new BookingException("La reserva con ID " + id + " no se encuentra registrada en el sistema", "404");
+		
+		List<Long> repetidos = new ArrayList<Long>();
+		for (Room r : rooms) {
+			if(r.getId() == null)
+				throw new RoomException("El identificador de la reserva es obligatorio", "404");
+			
+			Room room = roomDao.listRoom(r.getId());
+			if(room == null)
+				throw new RoomException("La habitación con ID " + r.getId() + " no se encuentra registrada", "404");
+			
+			if(repetidos.contains(r.getId()))
+				throw new RoomException("La habitación con ID " + r.getId() + " se encuentra repetida", "404");
+			else
+				repetidos.add(r.getId());
+			
+			if(!b.getRooms().contains(room)) {
+				b.getRooms().add(room);
+				b.addPrice(room.getPrice());
+				dao.updateBooking(b);
+			}
+		}
+		return Constants.RESPONSE_OK;
 	}
 	
 	/**
@@ -62,12 +96,93 @@ public class BookingService {
 	 * @param services
 	 * @return
 	 * @throws BookingException 
+	 * @throws ServiceException 
 	 */
-	public String addServicesToBooking(Long id, List<Service> services) throws BookingException {
+	public String addServicesToBooking(Long id, List<Service> services) throws BookingException, ServiceException {
 		Booking b = dao.listBooking(id);
-		for (Service s : services)
-			b.getServices().add(s);
-		return dao.updateBooking(b);
+		
+		if(b == null)
+			throw new BookingException("La reserva con ID " + id + " no se encuentra registrada en el sistema", "404");
+		
+		List<Long> repetidos = new ArrayList<Long>();
+		for (Service s : services) {
+			if(s.getId() == null)
+				throw new ServiceException("El identificador del servicio es obligatorio", "404");
+			
+			Service service = serviceDao.listService(s.getId());
+			if(service == null)
+				throw new ServiceException("El servicio con ID " + s.getId() + " no está registrado en el sistema", "404");
+			
+			if(repetidos.contains(s.getId()))
+				throw new ServiceException("El servicio con ID " + s.getId() + " se encuentra repetido", "404");
+			else
+				repetidos.add(s.getId());
+			
+			if(!b.getServices().contains(service)) {
+				b.getServices().add(service);	
+				b.addPrice(service.getPrice());
+				dao.updateBooking(b);
+			}
+		}
+		return Constants.RESPONSE_OK;
+	}
+	
+	public String removeServicesToBooking(Long idBooking, List<Service> listService) throws BookingException, ServiceException {
+		Booking b = dao.listBooking(idBooking);
+		
+		if(b == null)
+			throw new BookingException("La reserva con ID " + idBooking + " no se encuentra registrada en el sistema", "404");
+		
+		List<Long> repetidos = new ArrayList<Long>();
+		for (Service s : listService) {
+			if(s.getId() == null)
+				throw new ServiceException("El identificador del servicio es obligatorio", "404");
+			
+			Service service = serviceDao.listService(s.getId());
+			if(service == null)
+				throw new ServiceException("El servicio con ID " + s.getId() + " no está registrado en el sistema", "404");
+			
+			if(repetidos.contains(s.getId()))
+				throw new ServiceException("El servicio con ID " + s.getId() + " se encuentra repetido", "404");
+			else
+				repetidos.add(s.getId());
+			
+			if(b.getServices().contains(service)) {
+				b.getServices().remove(service);	
+				b.subPrice(service.getPrice());
+				dao.updateBooking(b);
+			}
+		}
+		return Constants.RESPONSE_OK;
+	}
+	
+	public String removeRoomsToBooking(Long idBooking, List<Room> listRoom) throws BookingException {
+		Booking b = dao.listBooking(idBooking);
+		
+		if(b == null)
+			throw new BookingException("La reserva con ID " + idBooking + " no se encuentra registrada en el sistema", "404");
+		
+		List<Long> repetidos = new ArrayList<Long>();
+		for(Room room : listRoom) {
+			if(room.getId() == null)
+				throw new RoomException("El identificador de la habitación es obligatorio", "404");
+			
+			Room r = roomDao.listRoom(room.getId());
+			if(r == null)
+				throw new RoomException("La habitación con ID " + room.getId() + " no está registrada en el sistema", "404");
+			
+			if(repetidos.contains(room.getId()))
+				throw new RoomException("La habitación con ID " + room.getId() + " no se encuentra registrada en el sistema", "404");
+			else
+				repetidos.add(room.getId());
+			
+			if(b.getRooms().contains(r)) {
+				b.getRooms().remove(r);
+				b.subPrice(r.getPrice());
+				dao.updateBooking(b);
+			}
+		}
+		return Constants.RESPONSE_OK;
 	}
 
 	/**
@@ -79,7 +194,14 @@ public class BookingService {
 	 * @throws ParseException
 	 */
 	public String deleteBooking(Long id) throws BookingException, ParseException {
-		return dao.deleteBooking(id);
+		Booking booking = dao.listBooking(id);
+		
+		if(booking == null)
+			throw new BookingException("La reserva con ID " + id + " no existe en el sistema", "404");
+		
+		booking.setCancelled(Constants.ACTIVE);
+		
+		return updateBooking(booking);
 	}
 
 	/**
@@ -90,9 +212,20 @@ public class BookingService {
 	 * @throws BookingException
 	 * @throws ParseException
 	 */
-	public String updateBooking(Long id, Booking booking) throws BookingException, ParseException {
+	public String updateBooking(Booking booking) throws BookingException, ParseException {
 		bookingValidator.validate(booking);
-		booking.setId(id);
+		
+		if(booking.getCancelled() == null)
+			booking.setCancelled(0);
+		else if(booking.getCancelled() != 0 && booking.getCancelled() != 1)
+			throw new BookingException("El campo cancelador de la reserva es incorrecto", "404");
+		
+		if(dao.listBooking(booking.getId()) == null)
+			throw new BookingException("La reserva con ID " + booking.getId() + " no existe en el sistema", "404");
+		
+		Client client = clientDao.getClientOfBooking(booking.getId());
+		
+		booking.setClient(client);
 		return dao.updateBooking(booking);
 	}
 
@@ -104,8 +237,13 @@ public class BookingService {
 	 * @throws ParseException
 	 * @throws BookingException
 	 */
-	public Booking listBooking(Long id) throws ParseException, BookingException {
-		return dao.listBooking(id);
+	public Booking listBooking(Long id) throws BookingException {
+		Booking booking =  dao.listBooking(id);
+		
+		if(booking == null)
+			throw new BookingException("La reserva con id =  " + id + " no existe.", "404");
+		
+		return booking;
 	}
 
 	/**
@@ -114,9 +252,15 @@ public class BookingService {
 	 * 
 	 * @return
 	 * @throws ParseException
+	 * @throws ClientException 
 	 */
-	public List<Booking> listBookingsOfClient(Long clientId) throws ParseException {
+	public List<Booking> listBookingsOfClient(Long clientId) throws ClientException {
+		
+		if(clientDao.listClient(clientId) == null)
+			throw new ClientException("El cliente con ID " + clientId + " no está registrado en el sistema", "404");
+		
 		return dao.listBookingsOfClient(clientId);
 	}
+	
 
 }

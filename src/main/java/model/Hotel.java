@@ -29,13 +29,16 @@ public class Hotel implements Serializable {
 	private String telephone;
 	private String address;
 
+
 	@Transient
 	private Location location;
 
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
 	private Set<Client> clients = new HashSet<Client>();
+
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
 	private Set<Room> rooms = new HashSet<Room>();
+	
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
 	private Set<Service> services = new HashSet<Service>();
 

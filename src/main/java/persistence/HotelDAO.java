@@ -3,6 +3,7 @@ package persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import exception.HotelException;
 import model.Hotel;
@@ -86,9 +87,9 @@ public class HotelDAO {
 			EntityManager em = dba.getActiveEm();
 
 			hotel = em.find(Hotel.class, id);
-			if (hotel == null)
-				throw new HotelException("El hotel con id =  " + id + " no existe.", "404");
-
+			
+		} catch (NoResultException e) {
+			return null;
 		} finally {
 			dba.closeEm();
 		}
@@ -112,5 +113,62 @@ public class HotelDAO {
 			dba.closeEm();
 		}
 		return resultList;
+	}
+	
+	public Hotel getHotelOfClient(Long idClient) {
+
+		Hotel hotel = null;
+		Long id = null;
+
+		Dba dba = new Dba();
+		try {
+			EntityManager em = dba.getActiveEm();
+			id = em.createQuery("select c.hotel.id from Client c where c.id = :clientId", Long.class)
+					.setParameter("clientId", idClient).getSingleResult();
+			
+			hotel = em.find(Hotel.class, id);
+			
+		} finally {
+			dba.closeEm();
+		}
+		return hotel;
+	}
+	
+	public Hotel getHotelOfService(Long idService) {
+
+		Hotel hotel = null;
+		Long id = null;
+
+		Dba dba = new Dba();
+		try {
+			EntityManager em = dba.getActiveEm();
+			id = em.createQuery("select s.hotel.id from Service s where s.id = :idService", Long.class)
+					.setParameter("idService", idService).getSingleResult();
+			
+			hotel = em.find(Hotel.class, id);
+			
+		} finally {
+			dba.closeEm();
+		}
+		return hotel;
+	}
+	
+	public Hotel getHotelOfRoom(Long idRoom) {
+
+		Hotel hotel = null;
+		Long id = null;
+
+		Dba dba = new Dba();
+		try {
+			EntityManager em = dba.getActiveEm();
+			id = em.createQuery("select r.hotel.id from Room r where r.id = :idRoom", Long.class)
+					.setParameter("idService", idRoom).getSingleResult();
+			
+			hotel = em.find(Hotel.class, id);
+			
+		} finally {
+			dba.closeEm();
+		}
+		return hotel;
 	}
 }

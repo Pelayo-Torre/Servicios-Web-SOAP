@@ -7,27 +7,32 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import exception.BookingException;
 import exception.HotelException;
 import exception.ServiceException;
-import model.Service;
+import model.dtos.ServiceAddDTO;
+import model.dtos.ServiceDTO;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
 public interface IServiceWS {
 
 	@WebMethod
-	public String addService(Service service, Long hotelId) throws ServiceException, HotelException;
+	public String addService(ServiceAddDTO service) throws ServiceException, HotelException;
 
 	@WebMethod
 	public String deleteService(Long id) throws ServiceException;
 
 	@WebMethod
-	public String updateService(Long id, Service service) throws ServiceException;
+	public String updateService(ServiceDTO service) throws ServiceException;
 
 	@WebMethod
-	public Service listService(Long id) throws ServiceException;
+	public ServiceDTO listService(Long id) throws ServiceException;
 
 	@WebMethod
-	public List<Service> listServicesOfHotel(Long hotelId);
-
+	public List<ServiceDTO> listServicesOfHotel(Long hotelId) throws HotelException;
+	
+	@WebMethod
+	public List<ServiceDTO> listServicesOfBooking(Long bookingId) throws BookingException;
+	
 }

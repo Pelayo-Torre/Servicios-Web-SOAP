@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,25 +13,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "booking")
-public class Booking implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Booking{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String code;
 	private String startDate;
 	private String endDate;
 	private double price;
+	private Integer cancelled;
 
 	@ManyToOne
-	@JoinColumn(name = "clientId", nullable = false)
+	@JoinColumn(name = "clientId")
 	private Client client;
 
 	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
@@ -50,14 +45,6 @@ public class Booking implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public String getStartDate() {
@@ -110,6 +97,22 @@ public class Booking implements Serializable {
 	public void setRooms(Set<Room> rooms) {
 		this.rooms = rooms;
 	}
+	
+	public Integer getCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(Integer cancelled) {
+		this.cancelled = cancelled;
+	}
+	
+	public double subPrice(double price) {
+		return this.price -= price;
+	}
+	
+	public double addPrice(double price) {
+		return this.price += price;
+	}
 
 	/**
 	 * Constructor
@@ -128,10 +131,9 @@ public class Booking implements Serializable {
 	 * @param services
 	 * @param rooms
 	 */
-	public Booking(String code, String startDate, String endDate, double price, Client client, Set<Service> services,
+	public Booking( String startDate, String endDate, double price, Client client, Set<Service> services,
 			Set<Room> rooms) {
 		super();
-		this.code = code;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.price = price;

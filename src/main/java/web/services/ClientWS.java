@@ -6,7 +6,9 @@ import javax.jws.WebService;
 
 import exception.ClientException;
 import exception.HotelException;
-import model.Client;
+import model.dtos.ClientAddDTO;
+import model.dtos.ClientDTO;
+import model.dtos.DTOAssembler;
 import services.ClientService;
 
 @WebService(endpointInterface = "web.services.IClientWS")
@@ -15,8 +17,8 @@ public class ClientWS implements IClientWS {
 	private ClientService clientService = new ClientService();
 
 	@Override
-	public String addClient(Client client, Long hotelId) throws ClientException, HotelException {
-		return clientService.addClient(client, hotelId);
+	public String addClient(ClientAddDTO dto) throws ClientException, HotelException {
+		return clientService.addClient(DTOAssembler.toEntity(dto), dto.getIdHotel());
 	}
 
 	@Override
@@ -25,18 +27,18 @@ public class ClientWS implements IClientWS {
 	}
 
 	@Override
-	public String updateClient(Long id, Client client) throws ClientException {
-		return clientService.updateClient(id, client);
+	public String updateClient(ClientDTO dto) throws ClientException {
+		return clientService.updateClient(DTOAssembler.toEntity(dto));
 	}
 
 	@Override
-	public Client listClient(Long id) throws ClientException {
-		return clientService.listClient(id);
+	public ClientDTO listClient(Long id) throws ClientException {
+		return DTOAssembler.toDTO(clientService.listClient(id));
 	}
 
 	@Override
-	public List<Client> listClientsOfHotel(Long hotelId) {
-		return clientService.listClientsOfHotel(hotelId);
+	public List<ClientDTO> listClientsOfHotel(Long hotelId) throws HotelException {
+		return DTOAssembler.toListDTO(clientService.listClientsOfHotel(hotelId));
 	}
 
 }

@@ -1,5 +1,6 @@
 package persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -47,9 +48,7 @@ public class ServiceDAO {
 			EntityManager em = dba.getActiveEm();
 
 			Service service = em.find(Service.class, id);
-			if (service == null)
-				throw new ServiceException("El servicio con id =  " + id + " no existe.", "404");
-
+			
 			em.remove(service);
 			em.getTransaction().commit();
 			return Constants.RESPONSE_OK;
@@ -89,10 +88,10 @@ public class ServiceDAO {
 			EntityManager em = dba.getActiveEm();
 
 			service = em.find(Service.class, id);
-			if (service == null)
-				throw new ServiceException("El servicio con id =  " + id + " no existe.", "404");
 
-		} finally {
+		} catch (NoResultException e) {
+			return null;
+		}finally {
 			dba.closeEm();
 		}
 		return service;
@@ -134,7 +133,9 @@ public class ServiceDAO {
 			EntityManager em = dba.getActiveEm();
 			resultList = em.createQuery("select s From Service s where s.hotel.id = :hotelId", Service.class)
 					.setParameter("hotelId", hotelId).getResultList();
-		} finally {
+		} catch (NoResultException e) {
+			return new ArrayList<Service>();
+		}finally {
 			dba.closeEm();
 		}
 		return resultList;

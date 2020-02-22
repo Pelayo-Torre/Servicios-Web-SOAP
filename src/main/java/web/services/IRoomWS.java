@@ -7,27 +7,32 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import exception.BookingException;
 import exception.HotelException;
 import exception.RoomException;
-import model.Room;
+import model.dtos.RoomAddDTO;
+import model.dtos.RoomDTO;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
 public interface IRoomWS {
 
 	@WebMethod
-	public String addRoom(Room room, Long hotelId) throws RoomException, HotelException;
+	public String addRoom(RoomAddDTO room) throws RoomException, HotelException;
 
 	@WebMethod
 	public String deleteRoom(Long id) throws RoomException;
 
 	@WebMethod
-	public String updateRoom(Long id, Room room) throws RoomException;
+	public String updateRoom(RoomDTO room) throws RoomException;
 
 	@WebMethod
-	public Room listRoom(Long id) throws RoomException;
+	public RoomDTO listRoom(Long id) throws RoomException;
 
 	@WebMethod
-	public List<Room> listRoomsOfHotel(Long hotelId);
+	public List<RoomDTO> listRoomsOfHotel(Long hotelId) throws HotelException;
+	
+	@WebMethod
+	public List<RoomDTO> listRoomsOfBooking(Long bookingId) throws BookingException;
 
 }

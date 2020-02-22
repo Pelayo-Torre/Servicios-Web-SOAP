@@ -13,6 +13,7 @@ import persistence.BookingDAO;
 import persistence.HotelDAO;
 import persistence.ManagerDAO;
 import persistence.ServiceDAO;
+import utils.Constants;
 import validators.ServiceValidator;
 
 public class ServiceService {
@@ -32,13 +33,18 @@ public class ServiceService {
 	 */
 	public String addService(Service service, Long hotelId) throws ServiceException, HotelException {
 		serviceValidator.validate(service);
-		Service s = dao.findServiceByCode(service.getCode());
-		if (s != null)
-			throw new ServiceException("El servicio con código =  " + service.getCode() + " ya existe en el sistema",
-					"404");
+		
+		if(hotelId == null)
+			throw new HotelException("El Idenificador del hotel es obligatorio", "404");
 
 		Hotel h = hotelDao.listHotel(hotelId);
+		
+		if(h == null)
+			throw new HotelException("El hotel con ID = " + hotelId + " no existe en el sistema", "404");
+		
 		service.setHotel(h);
+		service.setActive(Constants.ACTIVE);
+		
 		return dao.addService(service);
 	}
 
@@ -50,7 +56,13 @@ public class ServiceService {
 	 * @throws ServiceException
 	 */
 	public String deleteService(Long id) throws ServiceException {
-		return dao.deleteService(id);
+		Service service = dao.listService(id);
+		
+		if (service == null)
+			throw new ServiceException("El servicio con id =  " + id + " no existe.", "404");
+
+		service.setActive(Constants.INACTIVE);
+		return updateService(service);
 	}
 
 	/**
@@ -60,9 +72,20 @@ public class ServiceService {
 	 * @return
 	 * @throws ServiceException
 	 */
-	public String updateService(Long id, Service service) throws ServiceException {
+	public String updateService(Service service) throws ServiceException {
 		serviceValidator.validate(service);
-		service.setId(id);
+		
+		if(service.getActive() == null)
+			service.setActive(Constants.ACTIVE);
+		else if(service.getActive() != 0 && service.getActive() != 1)
+			throw new ServiceException("El campo activo del servicio es inválido", "404");
+		
+		if(dao.listService(service.getId()) == null)
+			throw new ServiceException("El servicio con ID " + service.getId() + " no está registrado en el sistema", "404");
+		
+		Hotel hotel = hotelDao.getHotelOfService(service.getId());
+		
+		service.setHotel(hotel);
 		return dao.updateService(service);
 	}
 
@@ -74,15 +97,23 @@ public class ServiceService {
 	 * @throws ServiceException
 	 */
 	public Service listService(Long id) throws ServiceException {
-		return dao.listService(id);
+		Service service = dao.listService(id);
+		
+		if(service == null)
+			throw new ServiceException("El servicio con ID " + id + " no está resgistrado en el sistema", "404");
+		
+		return service;
 	}
 
 	/**
 	 * Método para obtener la lista de servicios de un hotel
 	 * 
 	 * @return
+	 * @throws HotelException 
 	 */
-	public List<Service> listServicesOfHotel(Long hotelId) {
+	public List<Service> listServicesOfHotel(Long hotelId) throws HotelException {
+		if(hotelDao.listHotel(hotelId) == null)
+			throw new HotelException("El hotel con ID " + hotelId + " no está registrado en el sistema", "404");
 		return dao.listServicesOfHotel(hotelId);
 	}
 
@@ -96,6 +127,10 @@ public class ServiceService {
 	 */
 	public List<Service> listServicesOfBooking(Long bookingId) throws BookingException {
 		Booking b = bookingDao.listBooking(bookingId);
+		
+		if(b == null)
+			throw new BookingException("La reserva con ID " + bookingId + " no está registrada en el sistema", "404");
+		
 		return b.getServices().stream().collect(Collectors.toList());
 	}
 
