@@ -64,7 +64,7 @@ public class RoomService {
 		if(r == null)
 			throw new RoomException("La habitación con ID " + id + " no está registrada en el sistema", "404");
 		
-		r.setActive(Constants.ACTIVE);
+		r.setActive(Constants.INACTIVE);
 		return updateRoom(r);
 	}
 

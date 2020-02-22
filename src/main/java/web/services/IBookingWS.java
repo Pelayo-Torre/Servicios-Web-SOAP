@@ -26,7 +26,7 @@ public interface IBookingWS {
 	public String addBooking(BookingAddDTO booking) throws BookingException, ParseException, ClientException;
 	
 	@WebMethod
-	public String addRoomsToBooking(Long idBooking, List<Room> rooms) throws RoomException, BookingException;
+	public String addRoomsToBooking(Long idBooking, List<RoomDTO> rooms) throws RoomException, BookingException;
 	
 	@WebMethod
 	public String addServicesToBooking(Long idBooking, List<ServiceDTO> services) throws ServiceException, BookingException;

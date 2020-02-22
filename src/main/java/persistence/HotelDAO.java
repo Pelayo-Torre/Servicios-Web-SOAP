@@ -162,7 +162,7 @@ public class HotelDAO {
 		try {
 			EntityManager em = dba.getActiveEm();
 			id = em.createQuery("select r.hotel.id from Room r where r.id = :idRoom", Long.class)
-					.setParameter("idService", idRoom).getSingleResult();
+					.setParameter("idRoom", idRoom).getSingleResult();
 			
 			hotel = em.find(Hotel.class, id);
 			

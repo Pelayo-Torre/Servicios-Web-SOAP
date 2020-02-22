@@ -75,7 +75,6 @@ public class DTOAssembler {
 		Booking booking = new Booking();
 		
 		booking.setEndDate(dto.getEndDate());
-		booking.setPrice(dto.getPrice());
 		booking.setStartDate(dto.getStartDate());
 		
 		return booking;

@@ -28,8 +28,8 @@ public class BookingWS implements IBookingWS {
 	}
 	
 	@Override
-	public String addRoomsToBooking(Long id, List<Room> rooms) throws BookingException {
-		return bookingService.addRoomsToBooking(id, rooms);
+	public String addRoomsToBooking(Long id, List<RoomDTO> rooms) throws BookingException {
+		return bookingService.addRoomsToBooking(id, DTOAssembler.toListRoom(rooms));
 	}
 
 	@Override
